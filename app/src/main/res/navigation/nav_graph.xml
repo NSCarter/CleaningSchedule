@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/toDoList">
+    <fragment
+        android:id="@+id/toDoList"
+        android:name="com.example.cleaningschedule.fragments.toDoList"
+        android:label="to_do_list_fragment"
+        tools:layout="@layout/to_do_list_fragment" />
+</navigation>
