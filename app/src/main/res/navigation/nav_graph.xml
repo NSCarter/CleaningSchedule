@@ -7,6 +7,6 @@
     <fragment
         android:id="@+id/toDoList"
         android:name="com.example.cleaningschedule.fragments.toDoList"
-        android:label="to_do_list_fragment"
+        android:label="To Do"
         tools:layout="@layout/to_do_list_fragment" />
 </navigation>
