@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.cleaningschedule.MainActivity
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.viewmodels.ToDoListViewModel
@@ -35,4 +36,13 @@ class toDoList : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.add_item -> {
+                val action = toDoListDirections.actionToDoListToAddTask()
+                view?.findNavController()?.navigate(action)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }
