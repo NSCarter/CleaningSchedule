@@ -30,5 +30,4 @@ class AddTask : Fragment() {
         viewModel = ViewModelProviders.of(this).get(AddTaskViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
 }

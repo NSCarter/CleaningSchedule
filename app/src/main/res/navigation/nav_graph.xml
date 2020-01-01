@@ -16,6 +16,6 @@
     <fragment
         android:id="@+id/addTask"
         android:name="com.example.cleaningschedule.fragments.AddTask"
-        android:label="add_task_fragment"
+        android:label="Create New Task"
         tools:layout="@layout/add_task_fragment" />
 </navigation>
