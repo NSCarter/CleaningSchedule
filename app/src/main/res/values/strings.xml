@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">Cleaning Schedule</string>
     <string name="add_task">Add Task</string>
+
+    <!-- Add Task -->
+    <string name="task_label">Task*</string>
+    <string name="required">Required</string>
+    <string name="extra_details">Extra details</string>
+    <string name="optional">Optional</string>
+    <string name="rooms">Rooms</string>
+    <string name="occurrence">Occurrence</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
 </resources>
