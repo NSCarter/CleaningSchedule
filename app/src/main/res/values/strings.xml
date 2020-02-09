@@ -7,7 +7,7 @@
     <string name="required">Required</string>
     <string name="extra_details">Extra details</string>
     <string name="optional">Optional</string>
-    <string name="rooms">Rooms</string>
+    <string name="rooms">Rooms:</string>
     <string name="occurrence">Occurrence</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
