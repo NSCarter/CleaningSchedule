@@ -1,16 +1,14 @@
 package com.example.cleaningschedule.fragments
 
-import android.content.Context
-import android.graphics.Color
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import com.example.cleaningschedule.viewmodels.AddTaskViewModel
 import com.example.cleaningschedule.R
+import com.example.cleaningschedule.models.Occurrence
 import kotlinx.android.synthetic.main.add_task_fragment.*
 
 
@@ -21,6 +19,10 @@ class AddTask : Fragment() {
     }
 
     private lateinit var viewModel: AddTaskViewModel
+    private lateinit var name: String
+    private lateinit var extraDetails: String
+    private lateinit var rooms: Array<String>
+    private lateinit var occurrence: Occurrence
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +38,15 @@ class AddTask : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddTaskViewModel::class.java)
-        // TODO: Use the ViewModel
+
+        saveButton.setOnClickListener {
+            //TODO Create task object
+            name = taskEditText.text.toString()
+            extraDetails = extraDetailsEditText.text.toString()
+
+            taskEditText.text.clear()
+            extraDetailsEditText.text.clear()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

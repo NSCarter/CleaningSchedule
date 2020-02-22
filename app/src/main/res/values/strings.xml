@@ -11,4 +11,11 @@
     <string name="occurrence">Occurrence</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+
+    <!-- Occurrence -->
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="seasonally">Seasonally</string>
+    <string name="yearly">Yearly</string>
 </resources>
