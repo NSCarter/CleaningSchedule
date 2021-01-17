@@ -7,5 +7,15 @@ enum class Occurrence(val occurrence: Int) {
     WEEKLY(R.string.weekly),
     MONTHLY(R.string.monthly),
     SEASONALLY(R.string.seasonally),
-    YEARLY(R.string.yearly)
+    YEARLY(R.string.yearly);
+
+    //TODO Display nicely in spinner
+//    @Override
+//    override fun toString(): String {
+//        return occurrence.toString()
+//    }
+}
+
+fun setOccurrence(str: String) {
+
 }

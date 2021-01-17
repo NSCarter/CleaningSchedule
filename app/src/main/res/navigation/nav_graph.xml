@@ -6,7 +6,7 @@
     app:startDestination="@id/toDoList">
     <fragment
         android:id="@+id/toDoList"
-        android:name="com.example.cleaningschedule.fragments.toDoList"
+        android:name="com.example.cleaningschedule.fragments.ToDoListFragment"
         android:label="To Do"
         tools:layout="@layout/to_do_list_fragment" >
         <action
@@ -15,7 +15,19 @@
     </fragment>
     <fragment
         android:id="@+id/addTask"
-        android:name="com.example.cleaningschedule.fragments.AddTask"
+        android:name="com.example.cleaningschedule.fragments.AddTaskFragment"
         android:label="Create New Task"
-        tools:layout="@layout/add_task_fragment" />
+        tools:layout="@layout/add_task_fragment" >
+        <action
+            android:id="@+id/action_addTask_to_roomsList"
+            app:destination="@id/roomsList" />
+        <action
+            android:id="@+id/action_addTask_to_toDoList"
+            app:destination="@+id/toDoList" />
+    </fragment>
+    <fragment
+        android:id="@+id/roomsList"
+        android:name="com.example.cleaningschedule.fragments.RoomsListFragment"
+        android:label="Select rooms"
+        tools:layout="@layout/rooms_list_fragment" />
 </navigation>

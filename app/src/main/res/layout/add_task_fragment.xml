@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragments.AddTask">
+    tools:context=".fragments.AddTaskFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -96,6 +96,14 @@
         android:orientation="horizontal"
         android:background="@drawable/black_border"
         android:padding="5dp">
+        
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/selectedRooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:flexWrap="wrap"
+            android:layout_gravity="start">
+        </com.google.android.flexbox.FlexboxLayout>
 
         <View
             android:layout_width="0dp"
@@ -103,7 +111,7 @@
             android:layout_weight="1"/>
 
         <ImageButton
-            android:id="@+id/add_room_button"
+            android:id="@+id/addRoomButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_addpx"
