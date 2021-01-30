@@ -10,9 +10,12 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
+import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
 import com.example.cleaningschedule.models.Room
+import com.example.cleaningschedule.models.Task
 import com.example.cleaningschedule.viewmodels.AddTaskViewModel
 import kotlinx.android.synthetic.main.add_task_fragment.*
 import kotlinx.android.synthetic.main.removable_room_view.view.*
@@ -60,7 +63,16 @@ class AddTaskFragment : Fragment() {
             //Probably wont need this
             taskEditText.text.clear()
             extraDetailsEditText.text.clear()
-            viewModel.saveTask(view, name, extraDetails)
+
+            val databaseHandler = DatabaseHandler(activity!!.applicationContext)
+            val status = databaseHandler.addTask(Task(name, extraDetails))
+
+            if (status < 0) {
+                //TODO Display error message
+            }
+
+            val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
+            view.findNavController().navigate(action)
         }
 
         addRoomButton.setOnClickListener{
