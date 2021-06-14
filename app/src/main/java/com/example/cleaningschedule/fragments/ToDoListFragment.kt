@@ -6,7 +6,9 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
+import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.viewmodels.ToDoListViewModel
+import kotlinx.android.synthetic.main.to_do_list_fragment.*
 
 
 class ToDoListFragment : Fragment() {
@@ -43,5 +45,18 @@ class ToDoListFragment : Fragment() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val databaseHandler = DatabaseHandler(activity!!.applicationContext)
+        val tasks = databaseHandler.getTasks()
+
+        for(task in tasks) {
+            val taskView = LayoutInflater.from(activity!!.applicationContext).inflate(R.layout.task_card, tasksList, false)
+            // TODO Use recycler view instead
+            tasksList.addView(taskView)
+        }
     }
 }
