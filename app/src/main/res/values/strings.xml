@@ -1,4 +1,31 @@
 <resources>
     <string name="app_name">Cleaning Schedule</string>
     <string name="add_task">Add Task</string>
+
+    <!-- Add Task -->
+    <string name="task_label">Task*</string>
+    <string name="required">Required</string>
+    <string name="extra_details">Extra details</string>
+    <string name="optional">Optional</string>
+    <string name="rooms">Rooms:</string>
+    <string name="occurrence">Occurrence</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+    <!-- Occurrences -->
+    <string name="daily">Daily</string>
+    <string name="weekly">Weekly</string>
+    <string name="monthly">Monthly</string>
+    <string name="seasonally">Seasonally</string>
+    <string name="yearly">Yearly</string>
+    
+    <!-- Rooms -->
+    <string name="living_room">Living room</string>
+    <string name="kitchen">Kitchen</string>
+    <string name="dining_room">Dining room</string>
+    <string name="bathroom">Bathroom</string>
+    <string name="bedroom">Bedroom</string>
+    <string name="hallway">Hallway</string>
+    <string name="office">Office</string>
+    <string name="pantry">Pantry</string>
 </resources>
