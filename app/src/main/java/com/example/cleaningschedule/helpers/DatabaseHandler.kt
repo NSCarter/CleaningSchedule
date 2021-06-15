@@ -63,15 +63,20 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return success
     }
 
-    fun getTasks(): MutableList<String> {
+    fun getTasks(): MutableList<MutableList<String>> {
         val db = this.readableDatabase
 
         val cursor =  db.rawQuery("SELECT * FROM $TABLE_TASKS", null)
-        val tasks = mutableListOf<String>()
+        val tasks = mutableListOf<MutableList<String>>()
 
         if(cursor.moveToFirst()) {
             do {
-                tasks.add(cursor.getString(0))
+                val task = mutableListOf<String>()
+                task.add(cursor.getString(0))
+                task.add(cursor.getString(1))
+                task.add(cursor.getString(2))
+                task.add(cursor.getString(3))
+                tasks.add(task)
             } while (cursor.moveToNext())
         }
 
