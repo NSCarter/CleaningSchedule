@@ -7,11 +7,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cleaningschedule.R
 
-class TasksAdapter (private val tasks: MutableList<MutableList<String>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
+class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<String>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.taskName)
         val extraDetailsTextView: TextView = itemView.findViewById(R.id.extraDetails)
+        val roomsTextView: TextView = itemView.findViewById(R.id.rooms)
         val occurrenceTextView: TextView = itemView.findViewById(R.id.occurrence)
     }
 
@@ -23,10 +24,16 @@ class TasksAdapter (private val tasks: MutableList<MutableList<String>>) : Recyc
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val task = tasks[position]
+        val (task, rooms) = tasks[position]
         holder.nameTextView.text = task[1]
         holder.extraDetailsTextView.text = task[2]
         holder.occurrenceTextView.text = task[3]
+
+        var roomsText = ""
+        for (room in rooms) {
+            roomsText += room
+        }
+        holder.roomsTextView.text = roomsText
     }
 
     override fun getItemCount(): Int {
