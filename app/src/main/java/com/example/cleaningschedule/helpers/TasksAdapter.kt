@@ -1,8 +1,11 @@
 package com.example.cleaningschedule.helpers
 
+import android.graphics.Paint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cleaningschedule.R
@@ -12,7 +15,7 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.taskName)
         val extraDetailsTextView: TextView = itemView.findViewById(R.id.extraDetails)
-        val roomsTextView: TextView = itemView.findViewById(R.id.rooms)
+        val roomsList: LinearLayout = itemView.findViewById(R.id.rooms)
         val occurrenceTextView: TextView = itemView.findViewById(R.id.occurrence)
     }
 
@@ -29,11 +32,18 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
         holder.extraDetailsTextView.text = task[2]
         holder.occurrenceTextView.text = task[3]
 
-        var roomsText = ""
         for (room in rooms) {
-            roomsText += room
+            val checkBox = CheckBox(holder.itemView.context)
+            checkBox.text = room
+            checkBox.setOnClickListener{
+                if(checkBox.isChecked) {
+                    checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                } else {
+                    checkBox.paintFlags = 0
+                }
+            }
+            holder.roomsList.addView(checkBox)
         }
-        holder.roomsTextView.text = roomsText
     }
 
     override fun getItemCount(): Int {
