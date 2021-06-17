@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_toDoList_to_addTask"
             app:destination="@+id/addTask" />
+        <action
+            android:id="@+id/action_toDoList_to_viewTask"
+            app:destination="@id/viewTask" />
     </fragment>
     <fragment
         android:id="@+id/addTask"
@@ -27,7 +30,10 @@
     </fragment>
     <fragment
         android:id="@+id/roomsList"
-        android:name="com.example.cleaningschedule.fragments.RoomsListFragment"
-        android:label="Select rooms"
-        tools:layout="@layout/rooms_list_fragment" />
+        android:label="Select rooms"/>
+    <fragment
+        android:id="@+id/viewTask"
+        android:name="com.example.cleaningschedule.fragments.ViewTaskFragment"
+        android:label=""
+        tools:layout="@layout/fragment_view_task"/>
 </navigation>

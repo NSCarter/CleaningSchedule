@@ -7,8 +7,10 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cleaningschedule.R
+import com.example.cleaningschedule.fragments.ToDoListFragmentDirections
 
 class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<String>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
@@ -35,6 +37,7 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
         for (room in rooms) {
             val checkBox = CheckBox(holder.itemView.context)
             checkBox.text = room
+            checkBox.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             checkBox.setOnClickListener{
                 if(checkBox.isChecked) {
                     checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
@@ -43,6 +46,11 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
                 }
             }
             holder.roomsList.addView(checkBox)
+        }
+
+        holder.itemView.setOnClickListener{
+            val action = ToDoListFragmentDirections.actionToDoListToViewTask()
+            holder.itemView.findNavController().navigate(action)
         }
     }
 
