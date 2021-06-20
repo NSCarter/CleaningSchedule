@@ -66,7 +66,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
     fun getTasks(): MutableList<Pair<MutableList<String>, MutableList<String>>> {
         val db = this.readableDatabase
 
-        val cursor =  db.rawQuery("SELECT * FROM $TABLE_TASKS", null)
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_TASKS", null)
         val tasks = mutableListOf<Pair<MutableList<String>, MutableList<String>>>()
 
         if(cursor.moveToFirst()) {
@@ -95,5 +95,36 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         cursor.close()
         db.close()
         return tasks
+    }
+
+    fun getTask(id: Int): Pair<MutableList<String>, MutableList<String>> {
+        val db = this.readableDatabase
+
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_TASKS WHERE $KEY_ID=$id", null)
+        var taskInfo = Pair(mutableListOf(String()), mutableListOf(String()))
+
+        if(cursor.moveToFirst()) {
+            do {
+                val task = mutableListOf<String>()
+                task.add(cursor.getString(1))
+                task.add(cursor.getString(2))
+                task.add(cursor.getString(3))
+
+                val roomsCursor = db.rawQuery("SELECT * FROM $TABLE_ROOMS WHERE $KEY_TASK_ID=$id", null)
+                val rooms = mutableListOf<String>()
+
+                if(roomsCursor.moveToFirst()) {
+                    do {
+                        rooms.add(roomsCursor.getString(2))
+                    } while (roomsCursor.moveToNext())
+                }
+                roomsCursor.close()
+                taskInfo = Pair(task, rooms)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return taskInfo
     }
 }
