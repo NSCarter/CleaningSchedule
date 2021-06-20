@@ -28,4 +28,7 @@
     <string name="hallway">Hallway</string>
     <string name="office">Office</string>
     <string name="pantry">Pantry</string>
+
+    <!-- View Task -->
+    <string name="delete">Delete</string>
 </resources>

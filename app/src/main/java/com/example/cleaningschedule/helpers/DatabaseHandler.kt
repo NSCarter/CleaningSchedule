@@ -127,4 +127,13 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return taskInfo
     }
+
+    fun deleteTask(id: Int): Int {
+        val db = this.readableDatabase
+
+        val result = db.delete(TABLE_TASKS, "$KEY_ID=$id", null)
+
+        db.close()
+        return result
+    }
 }

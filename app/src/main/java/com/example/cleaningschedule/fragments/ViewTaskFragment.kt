@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import kotlinx.android.synthetic.main.fragment_view_task.*
@@ -37,5 +38,12 @@ class ViewTaskFragment : Fragment() {
             roomsText += room
         }
         taskRoomsTextView.text = roomsText
+
+        deleteButton.setOnClickListener {
+            // TODO add a confirmation pop up
+            databaseHandler.deleteTask(taskId)
+            val action = ViewTaskFragmentDirections.actionViewTaskToToDoList()
+            view.findNavController().navigate(action)
+        }
     }
 }

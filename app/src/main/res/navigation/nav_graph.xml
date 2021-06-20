@@ -43,5 +43,8 @@
         <argument
             android:name="taskId"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_viewTask_to_toDoList"
+            app:destination="@id/toDoList" />
     </fragment>
 </navigation>
