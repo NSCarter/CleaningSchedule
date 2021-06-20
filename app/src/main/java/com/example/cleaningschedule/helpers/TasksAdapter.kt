@@ -49,7 +49,7 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
         }
 
         holder.itemView.setOnClickListener{
-            val action = ToDoListFragmentDirections.actionToDoListToViewTask()
+            val action = ToDoListFragmentDirections.actionToDoListToViewTask(task[0].toInt())
             holder.itemView.findNavController().navigate(action)
         }
     }

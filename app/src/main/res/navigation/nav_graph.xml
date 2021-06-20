@@ -14,7 +14,11 @@
             app:destination="@+id/addTask" />
         <action
             android:id="@+id/action_toDoList_to_viewTask"
-            app:destination="@id/viewTask" />
+            app:destination="@id/viewTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/addTask"
@@ -35,5 +39,9 @@
         android:id="@+id/viewTask"
         android:name="com.example.cleaningschedule.fragments.ViewTaskFragment"
         android:label=""
-        tools:layout="@layout/fragment_view_task"/>
+        tools:layout="@layout/fragment_view_task">
+        <argument
+            android:name="taskId"
+            app:argType="integer"/>
+    </fragment>
 </navigation>

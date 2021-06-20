@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.helpers.DatabaseHandler
@@ -33,7 +33,7 @@ class AddTaskFragment : Fragment() {
     private lateinit var rooms: MutableList<String>
     private lateinit var occurrence: String
 
-    val checkedItems = BooleanArray(Room.values().size) {false}
+    private val checkedItems = BooleanArray(Room.values().size) {false}
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,14 +43,9 @@ class AddTaskFragment : Fragment() {
         return inflater.inflate(R.layout.add_task_fragment, container, false)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(AddTaskViewModel::class.java)
-
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
 
         occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
 
@@ -66,7 +61,7 @@ class AddTaskFragment : Fragment() {
             }
             occurrence = occurrenceDropdown.selectedItem.toString()
 
-            val databaseHandler = DatabaseHandler(activity!!.applicationContext)
+            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
             val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
 
 //            if (status < 0) {
@@ -85,7 +80,7 @@ class AddTaskFragment : Fragment() {
     private lateinit var alertDialog: AlertDialog
         private fun showCustomDialog() {
             val inflater: LayoutInflater = layoutInflater
-            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(context!!)
+            val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogLayout = inflater.inflate(R.layout.select_rooms_list, null)
 
             val roomArray = arrayOfNulls<Pair <String, Boolean>>(Room.values().size)
@@ -93,7 +88,7 @@ class AddTaskFragment : Fragment() {
                 roomArray[i] = Pair(getString(Room.values()[i].Room), true)
             }
 
-            dialogLayout.roomsList.adapter = ArrayAdapter<Pair <String, Boolean>>(context!!, android.R.layout.simple_list_item_multiple_choice, roomArray)
+            dialogLayout.roomsList.adapter = ArrayAdapter<Pair <String, Boolean>>(requireContext(), android.R.layout.simple_list_item_multiple_choice, roomArray)
             dialogLayout.roomsList.choiceMode = ListView.CHOICE_MODE_MULTIPLE
             dialogLayout.roomsList.setOnItemClickListener{_, view, position, _ ->
                 view.isSelected = !view.isSelected
