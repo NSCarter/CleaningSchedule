@@ -40,6 +40,11 @@ class ViewTaskFragment : Fragment() {
         }
         taskRoomsTextView.text = roomsText
 
+        updateButton.setOnClickListener {
+            val action = ViewTaskFragmentDirections.actionViewTaskToUpdateTask()
+            view.findNavController().navigate(action)
+        }
+
         deleteButton.setOnClickListener {
             showDialog(taskId)
         }

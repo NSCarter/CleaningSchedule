@@ -32,7 +32,8 @@
             app:layout_constraintTop_toTopOf="@id/imageView"
             android:layout_marginStart="20dp"
             android:textSize="15sp"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:labelFor="@id/taskEditText"/>
 
         <EditText
             android:id="@+id/taskEditText"
@@ -47,7 +48,8 @@
             android:layout_marginTop="5dp"
             android:padding="5dp"
             android:textSize="15sp"
-            android:background="@drawable/black_border"/>
+            android:background="@drawable/black_border"
+            android:importantForAutofill="no"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
@@ -75,7 +77,8 @@
         android:background="@drawable/black_border"
         android:textColorHint="@color/hint"
         android:padding="5dp"
-        android:textSize="15sp"/>
+        android:textSize="15sp"
+        android:importantForAutofill="no"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -116,8 +119,20 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_addpx"
             android:background="@drawable/black_border"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            android:contentDescription="@string/add_rooms"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/occurrence"
+        android:paddingTop="20dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="5dp"
+        android:textColor="@color/black"
+        android:textSize="15sp"/>
 
     <Spinner
         android:id="@+id/occurrenceDropdown"

@@ -11,6 +11,7 @@
     <string name="occurrence">Occurrence</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="add_rooms">Add rooms</string>
 
     <!-- Occurrences -->
     <string name="daily">Daily</string>
@@ -31,4 +32,5 @@
 
     <!-- View Task -->
     <string name="delete">Delete</string>
+    <string name="update">Update</string>
 </resources>

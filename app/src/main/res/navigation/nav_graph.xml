@@ -46,5 +46,12 @@
         <action
             android:id="@+id/action_viewTask_to_toDoList"
             app:destination="@id/toDoList" />
+        <action
+            android:id="@+id/action_viewTask_to_updateTask"
+            app:destination="@id/updateTask" />
     </fragment>
+    <fragment
+        android:id="@+id/updateTask"
+        android:name="com.example.cleaningschedule.fragments.UpdateTaskFragment"
+        android:label="Update Task" />
 </navigation>
