@@ -1,5 +1,6 @@
 package com.example.cleaningschedule.fragments
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -40,10 +41,22 @@ class ViewTaskFragment : Fragment() {
         taskRoomsTextView.text = roomsText
 
         deleteButton.setOnClickListener {
-            // TODO add a confirmation pop up
-            databaseHandler.deleteTask(taskId)
-            val action = ViewTaskFragmentDirections.actionViewTaskToToDoList()
-            view.findNavController().navigate(action)
+            showDialog(taskId)
         }
+    }
+
+    private fun showDialog(id: Int) {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setMessage("Are you sure you want to delete this task?")
+        builder.setPositiveButton("Delete")
+            { _, _ ->
+                val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
+                databaseHandler.deleteTask(id)
+                val action = ViewTaskFragmentDirections.actionViewTaskToToDoList()
+                view?.findNavController()?.navigate(action)
+            }
+        builder.setNegativeButton("Cancel")
+        { _, _ ->  }
+        builder.show()
     }
 }
