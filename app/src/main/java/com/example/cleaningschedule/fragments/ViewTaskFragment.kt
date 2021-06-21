@@ -41,7 +41,7 @@ class ViewTaskFragment : Fragment() {
         taskRoomsTextView.text = roomsText
 
         updateButton.setOnClickListener {
-            val action = ViewTaskFragmentDirections.actionViewTaskToUpdateTask()
+            val action = ViewTaskFragmentDirections.actionViewTaskToUpdateTask(taskId)
             view.findNavController().navigate(action)
         }
 

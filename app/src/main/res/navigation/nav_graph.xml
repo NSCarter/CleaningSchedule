@@ -48,10 +48,18 @@
             app:destination="@id/toDoList" />
         <action
             android:id="@+id/action_viewTask_to_updateTask"
-            app:destination="@id/updateTask" />
+            app:destination="@id/updateTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/updateTask"
         android:name="com.example.cleaningschedule.fragments.UpdateTaskFragment"
-        android:label="Update Task" />
+        android:label="Update Task">
+        <argument
+            android:name="taskId"
+            app:argType="integer"/>
+    </fragment>
 </navigation>

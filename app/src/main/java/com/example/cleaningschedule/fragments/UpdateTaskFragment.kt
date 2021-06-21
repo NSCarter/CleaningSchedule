@@ -46,7 +46,26 @@ class UpdateTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
 
+        val args = arguments?.let { ViewTaskFragmentArgs.fromBundle(it) }
+        val taskId = args?.taskId
+
+        val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
+        val (taskInfo, initialRooms) = databaseHandler.getTask(taskId!!)
+
+        taskEditText.setText(taskInfo[0])
+        extraDetailsEditText.setText(taskInfo[1])
+
+        for (i in Room.values().indices) {
+            if (getString(Room.values()[i].Room) in initialRooms) {
+                checkedItems[i] = true
+            }
+        }
+
+        updateRooms(inflater = layoutInflater)
+
         occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
+
+        // TODO - set default occurrence (save occurrence as index value in database)
 
         saveButton.setOnClickListener {
             name = taskEditText.text.toString()
@@ -60,7 +79,7 @@ class UpdateTaskFragment : Fragment() {
             }
             occurrence = occurrenceDropdown.selectedItem.toString()
 
-            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
+//            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
 //            val status = databaseHandler.updateTask(Task(name, extraDetails, rooms, occurrence))
 
 //            if (status < 0) {
@@ -102,21 +121,25 @@ class UpdateTaskFragment : Fragment() {
         dialogBuilder.setOnDismissListener {
             selectedRooms.removeAllViews()
 
-            for (i in checkedItems.indices) {
-                if (checkedItems[i]) {
-                    val roomView = inflater.inflate(R.layout.removable_room_view, null)
-                    roomView.roomText.text = getString(Room.values()[i].Room)
-                    roomView.removeButton.tag = i
-                    roomView.removeButton.setOnClickListener { v ->
-                        checkedItems[v.tag.toString().toInt()] = false
-                        selectedRooms.removeViewAt(v.tag.toString().toInt())
-                    }
-                    selectedRooms.addView(roomView)
-                }
-            }
+            updateRooms(inflater)
         }
 
         dialogBuilder.show()
+    }
+
+    private fun updateRooms(inflater: LayoutInflater) {
+        for (i in checkedItems.indices) {
+            if (checkedItems[i]) {
+                val roomView = inflater.inflate(R.layout.removable_room_view, null)
+                roomView.roomText.text = getString(Room.values()[i].Room)
+                roomView.removeButton.tag = i
+                roomView.removeButton.setOnClickListener { v ->
+                    checkedItems[v.tag.toString().toInt()] = false
+                    selectedRooms.removeViewAt(v.tag.toString().toInt())
+                }
+                selectedRooms.addView(roomView)
+            }
+        }
     }
 
 }
