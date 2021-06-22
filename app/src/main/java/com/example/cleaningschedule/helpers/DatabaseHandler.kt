@@ -8,7 +8,7 @@ import com.example.cleaningschedule.models.Task
 
 class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 2
+        private const val DATABASE_VERSION = 4
         private const val DATABASE_NAME = "TaskDatabase"
         private const val TABLE_TASKS = "TaskTable"
         private const val TABLE_ROOMS = "RoomTable"
@@ -25,7 +25,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT NOT NULL,"
                 + KEY_EXTRA_DETAILS + " TEXT,"
-                + KEY_OCCURRENCE + ")")
+                + KEY_OCCURRENCE + " INTEGER)")
         db?.execSQL(createTasksTable)
 
         val createRoomsTable = ("CREATE TABLE " + TABLE_ROOMS + "("

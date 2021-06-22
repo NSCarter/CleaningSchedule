@@ -31,7 +31,7 @@ class AddTaskFragment : Fragment() {
     private lateinit var name: String
     private lateinit var extraDetails: String
     private lateinit var rooms: MutableList<String>
-    private lateinit var occurrence: String
+    private var occurrence = -1
 
     private val checkedItems = BooleanArray(Room.values().size) {false}
 
@@ -59,7 +59,7 @@ class AddTaskFragment : Fragment() {
 
                 }
             }
-            occurrence = occurrenceDropdown.selectedItem.toString()
+            occurrence = occurrenceDropdown.selectedItemPosition
 
             val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
             val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))

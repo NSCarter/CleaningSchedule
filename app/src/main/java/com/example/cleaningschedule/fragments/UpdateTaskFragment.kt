@@ -65,7 +65,7 @@ class UpdateTaskFragment : Fragment() {
 
         occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
 
-        // TODO - set default occurrence (save occurrence as index value in database)
+        occurrenceDropdown.setSelection(taskInfo[2].toInt())
 
         saveButton.setOnClickListener {
             name = taskEditText.text.toString()

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.helpers.DatabaseHandler
+import com.example.cleaningschedule.models.Occurrence
 import kotlinx.android.synthetic.main.fragment_view_task.*
 
 class ViewTaskFragment : Fragment() {
@@ -32,7 +33,7 @@ class ViewTaskFragment : Fragment() {
 
         taskNameTextView.text = taskInfo[0]
         taskExtraDetailsTextView.text = taskInfo[1]
-        taskOccurrenceTextView.text = taskInfo[2]
+        taskOccurrenceTextView.text = Occurrence.values()[taskInfo[2].toInt()].toString()
 
         var roomsText = ""
         for (room in rooms) {
