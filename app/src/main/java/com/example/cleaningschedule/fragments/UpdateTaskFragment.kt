@@ -80,7 +80,6 @@ class UpdateTaskFragment : Fragment() {
             }
             occurrence = occurrenceDropdown.selectedItemPosition
 
-            // TODO - All rooms need to be deleted and re added
             val status = databaseHandler.updateTask(Task(name, extraDetails, rooms, occurrence), taskId)
 
 //            if (status < 0) {

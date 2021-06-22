@@ -146,6 +146,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         taskContentValues.put(KEY_OCCURRENCE, tmp.occurrence)
         val taskInsertResult = db.update(TABLE_TASKS, taskContentValues, "$KEY_ID=$id", null)
 
+        db.delete(TABLE_ROOMS, "$KEY_TASK_ID=$id", null)
+
         val roomContentValues = ContentValues()
         var success = 0L
         for (room in tmp.rooms) {
