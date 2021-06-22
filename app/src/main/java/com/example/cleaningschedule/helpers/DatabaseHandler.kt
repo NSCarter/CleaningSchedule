@@ -136,4 +136,25 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         db.close()
         return result
     }
+
+    fun updateTask(tmp: Task, id: Int): Long {
+        val db = this.writableDatabase
+
+        val taskContentValues = ContentValues()
+        taskContentValues.put(KEY_NAME, tmp.taskName)
+        taskContentValues.put(KEY_EXTRA_DETAILS, tmp.extraDetails)
+        taskContentValues.put(KEY_OCCURRENCE, tmp.occurrence)
+        val taskInsertResult = db.update(TABLE_TASKS, taskContentValues, "$KEY_ID=$id", null)
+
+        val roomContentValues = ContentValues()
+        var success = 0L
+        for (room in tmp.rooms) {
+            roomContentValues.put(KEY_TASK_ID, taskInsertResult)
+            roomContentValues.put(KEY_ROOM, room)
+            success = db.insert(TABLE_ROOMS, null, roomContentValues)
+        }
+
+        db.close()
+        return success
+    }
 }

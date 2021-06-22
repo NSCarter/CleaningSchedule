@@ -61,5 +61,12 @@
         <argument
             android:name="taskId"
             app:argType="integer"/>
+        <action
+            android:id="@+id/action_updateTask_to_viewTask"
+            app:destination="@id/viewTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
     </fragment>
 </navigation>

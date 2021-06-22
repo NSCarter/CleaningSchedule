@@ -14,6 +14,7 @@ import com.example.cleaningschedule.R
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
 import com.example.cleaningschedule.models.Room
+import com.example.cleaningschedule.models.Task
 import com.example.cleaningschedule.viewmodels.AddTaskViewModel
 import kotlinx.android.synthetic.main.add_task_fragment.*
 import kotlinx.android.synthetic.main.removable_room_view.view.*
@@ -30,7 +31,7 @@ class UpdateTaskFragment : Fragment() {
     private lateinit var name: String
     private lateinit var extraDetails: String
     private lateinit var rooms: MutableList<String>
-    private lateinit var occurrence: String
+    private var occurrence = -1
 
     private val checkedItems = BooleanArray(Room.values().size) {false}
 
@@ -77,16 +78,16 @@ class UpdateTaskFragment : Fragment() {
 
                 }
             }
-            occurrence = occurrenceDropdown.selectedItem.toString()
+            occurrence = occurrenceDropdown.selectedItemPosition
 
-//            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
-//            val status = databaseHandler.updateTask(Task(name, extraDetails, rooms, occurrence))
+            // TODO - All rooms need to be deleted and re added
+            val status = databaseHandler.updateTask(Task(name, extraDetails, rooms, occurrence), taskId)
 
 //            if (status < 0) {
 //                //TODO Display error message
 //            }
-
-            val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
+            
+            val action = UpdateTaskFragmentDirections.actionUpdateTaskToViewTask(taskId)
             view.findNavController().navigate(action)
         }
 
