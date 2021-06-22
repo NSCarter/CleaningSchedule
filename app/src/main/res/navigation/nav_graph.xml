@@ -12,6 +12,13 @@
         <action
             android:id="@+id/action_toDoList_to_addTask"
             app:destination="@+id/addTask" />
+        <action
+            android:id="@+id/action_toDoList_to_viewTask"
+            app:destination="@id/viewTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/addTask"
@@ -27,7 +34,39 @@
     </fragment>
     <fragment
         android:id="@+id/roomsList"
-        android:name="com.example.cleaningschedule.fragments.RoomsListFragment"
-        android:label="Select rooms"
-        tools:layout="@layout/rooms_list_fragment" />
+        android:label="Select rooms"/>
+    <fragment
+        android:id="@+id/viewTask"
+        android:name="com.example.cleaningschedule.fragments.ViewTaskFragment"
+        android:label=""
+        tools:layout="@layout/fragment_view_task">
+        <argument
+            android:name="taskId"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_viewTask_to_toDoList"
+            app:destination="@id/toDoList" />
+        <action
+            android:id="@+id/action_viewTask_to_updateTask"
+            app:destination="@id/updateTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/updateTask"
+        android:name="com.example.cleaningschedule.fragments.UpdateTaskFragment"
+        android:label="Update Task">
+        <argument
+            android:name="taskId"
+            app:argType="integer"/>
+        <action
+            android:id="@+id/action_updateTask_to_viewTask"
+            app:destination="@id/viewTask">
+            <argument
+                android:name="taskId"
+                app:argType="integer" />
+        </action>
+    </fragment>
 </navigation>

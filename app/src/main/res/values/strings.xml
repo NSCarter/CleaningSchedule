@@ -11,6 +11,7 @@
     <string name="occurrence">Occurrence</string>
     <string name="cancel">Cancel</string>
     <string name="save">Save</string>
+    <string name="add_rooms">Add rooms</string>
 
     <!-- Occurrences -->
     <string name="daily">Daily</string>
@@ -18,7 +19,7 @@
     <string name="monthly">Monthly</string>
     <string name="seasonally">Seasonally</string>
     <string name="yearly">Yearly</string>
-    
+
     <!-- Rooms -->
     <string name="living_room">Living room</string>
     <string name="kitchen">Kitchen</string>
@@ -28,4 +29,8 @@
     <string name="hallway">Hallway</string>
     <string name="office">Office</string>
     <string name="pantry">Pantry</string>
+
+    <!-- View Task -->
+    <string name="delete">Delete</string>
+    <string name="update">Update</string>
 </resources>
