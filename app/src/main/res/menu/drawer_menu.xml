@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_to_do_list_fragment"
+            android:title="@string/to_do" />
+        <item
+            android:id="@+id/nav_all_tasks_fragment"
+            android:title="@string/all_tasks" />
+        <item
+            android:id="@+id/nav_settings_fragment"
+            android:title="@string/settings" />
+    </group>
+</menu>
