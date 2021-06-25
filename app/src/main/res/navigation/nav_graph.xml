@@ -7,8 +7,8 @@
     <fragment
         android:id="@+id/toDoList"
         android:name="com.example.cleaningschedule.fragments.ToDoListFragment"
-        android:label="To Do"
-        tools:layout="@layout/to_do_list_fragment" >
+        android:label="@string/to_do"
+        tools:layout="@layout/to_do_list_fragment">
         <action
             android:id="@+id/action_toDoList_to_addTask"
             app:destination="@+id/addTask" />
@@ -69,4 +69,13 @@
                 app:argType="integer" />
         </action>
     </fragment>
+    <fragment
+        android:id="@+id/allTasks"
+        android:name="com.example.cleaningschedule.fragments.AllTasksFragment"
+        android:label="@string/all_tasks"
+        tools:layout="@layout/fragment_all_tasks" />
+    <fragment
+        android:id="@+id/settings"
+        android:name="com.example.cleaningschedule.fragments.SettingsFragment"
+        android:label="@string/settings" />
 </navigation>

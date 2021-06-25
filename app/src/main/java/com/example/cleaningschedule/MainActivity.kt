@@ -3,14 +3,16 @@ package com.example.cleaningschedule
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import androidx.drawerlayout.widget.DrawerLayout
-import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,10 +25,17 @@ class MainActivity : AppCompatActivity() {
 
         drawerLayout = findViewById(R.id.drawer_layout)
 
-        val navController = findNavController(R.id.nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration(navController.graph, drawerLayout)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+        val topLevelDestinations: HashSet<Int> = HashSet(listOf(R.id.toDoList, R.id.allTasks, R.id.settings))
+
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
+        appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
+            .setOpenableLayout(drawerLayout)
+            .build()
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        nav_view.menu.getItem(0).isChecked = true
 
         val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         val rooms: Set<String> = setOf(
@@ -49,5 +58,17 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    fun navigateTo(menuItem: MenuItem) {
+        val fragmentId = when (menuItem.itemId) {
+            R.id.nav_to_do_list_fragment -> R.id.toDoList
+            R.id.nav_all_tasks_fragment -> R.id.allTasks
+            else -> R.id.settings
+        }
+
+        val navController = findNavController(R.id.nav_host_fragment)
+        navController.navigate(fragmentId)
+        drawerLayout.closeDrawers()
     }
 }
