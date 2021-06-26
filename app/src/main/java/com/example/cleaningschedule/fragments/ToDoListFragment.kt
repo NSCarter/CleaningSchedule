@@ -49,7 +49,7 @@ class ToDoListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
-        val tasks = databaseHandler.getTasks()
+        val tasks = databaseHandler.getToDoTasks()
         val adapter = TasksAdapter(tasks)
         tasksList.adapter = adapter
         tasksList.layoutManager = LinearLayoutManager(requireActivity().applicationContext)

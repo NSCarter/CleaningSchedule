@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.cleaningschedule.models.Room
 import com.example.cleaningschedule.models.Task
+import java.text.SimpleDateFormat
 import java.util.*
 
 class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
@@ -55,7 +56,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         taskContentValues.put(KEY_NAME, tmp.taskName)
         taskContentValues.put(KEY_EXTRA_DETAILS, tmp.extraDetails)
         taskContentValues.put(KEY_OCCURRENCE, tmp.occurrence)
-        taskContentValues.put(KEY_NEXT_OCCURRENCE, Calendar.getInstance().toString())
+        taskContentValues.put(KEY_NEXT_OCCURRENCE, getDate())
         val taskInsertResult = db.insert(TABLE_TASKS, null, taskContentValues)
 
         val roomContentValues = ContentValues()
@@ -74,6 +75,41 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         val db = this.readableDatabase
 
         val cursor = db.rawQuery("SELECT * FROM $TABLE_TASKS", null)
+        val tasks = mutableListOf<Pair<MutableList<String>, MutableList<Room>>>()
+
+        if(cursor.moveToFirst()) {
+            do {
+                val task = mutableListOf<String>()
+                val id = cursor.getString(0)
+                task.add(id)
+                task.add(cursor.getString(1))
+                task.add(cursor.getString(2))
+                task.add(cursor.getString(3))
+                task.add(cursor.getString(4))
+
+                val roomsCursor = db.rawQuery("SELECT * FROM $TABLE_ROOMS WHERE $KEY_TASK_ID=$id", null)
+                val rooms = mutableListOf<Room>()
+
+                if(roomsCursor.moveToFirst()) {
+                    do {
+                        rooms.add(Room(roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
+                    } while (roomsCursor.moveToNext())
+                }
+                roomsCursor.close()
+
+                tasks.add(Pair(task, rooms))
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return tasks
+    }
+
+    fun getToDoTasks(): MutableList<Pair<MutableList<String>, MutableList<Room>>> {
+        val db = this.readableDatabase
+
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_TASKS WHERE $KEY_NEXT_OCCURRENCE<=${getDate()}", null)
         val tasks = mutableListOf<Pair<MutableList<String>, MutableList<Room>>>()
 
         if(cursor.moveToFirst()) {
@@ -166,5 +202,10 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
         db.close()
         return success
+    }
+
+    private fun getDate(): String {
+        val sdf = SimpleDateFormat("yyyMMdd", Locale.ENGLISH)
+        return sdf.format(Date())
     }
 }
