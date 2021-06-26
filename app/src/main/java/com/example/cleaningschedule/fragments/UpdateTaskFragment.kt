@@ -94,9 +94,10 @@ class UpdateTaskFragment : Fragment() {
 //            if (status < 0) {
 //                //TODO Display error message
 //            }
-            
-            val action = UpdateTaskFragmentDirections.actionUpdateTaskToViewTask(taskId)
-            view.findNavController().navigate(action)
+
+            val navController = view.findNavController()
+            val id = navController.currentDestination?.id
+            navController.popBackStack(id!!, true)
         }
 
         addRoomButton.setOnClickListener{

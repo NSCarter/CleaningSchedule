@@ -40,12 +40,21 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
             val checkBox = CheckBox(holder.itemView.context)
             checkBox.text = room.room
             checkBox.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            checkBox.isChecked = room.isChecked
+            checkPaintFlags(checkBox)
+
             checkBox.setOnClickListener{
-                if(checkBox.isChecked) {
-                    checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                } else {
-                    checkBox.paintFlags = 0
-                }
+                room.isChecked = checkBox.isChecked
+
+                checkPaintFlags(checkBox)
+
+                val databaseHandler = DatabaseHandler(holder.itemView.context)
+                databaseHandler.updateRoom(room.id, room.isChecked)
+
+                val navController = holder.itemView.findNavController()
+                val id = navController.currentDestination?.id
+                navController.popBackStack(id!!, true)
+                navController.navigate(id)
             }
             holder.roomsList.addView(checkBox)
         }
@@ -58,5 +67,13 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
 
     override fun getItemCount(): Int {
         return tasks.size
+    }
+
+    private fun checkPaintFlags(checkBox: CheckBox) {
+        if(checkBox.isChecked) {
+            checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            checkBox.paintFlags = 0
+        }
     }
 }

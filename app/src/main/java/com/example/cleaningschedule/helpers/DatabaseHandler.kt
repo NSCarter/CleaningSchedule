@@ -92,7 +92,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
                 if(roomsCursor.moveToFirst()) {
                     do {
-                        rooms.add(Room(roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
+                        rooms.add(Room(roomsCursor.getInt(0), roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
                     } while (roomsCursor.moveToNext())
                 }
                 roomsCursor.close()
@@ -127,7 +127,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
 
                 if(roomsCursor.moveToFirst()) {
                     do {
-                        rooms.add(Room(roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
+                        rooms.add(Room(roomsCursor.getInt(0), roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
                     } while (roomsCursor.moveToNext())
                 }
                 roomsCursor.close()
@@ -188,20 +188,30 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         taskContentValues.put(KEY_NAME, tmp.taskName)
         taskContentValues.put(KEY_EXTRA_DETAILS, tmp.extraDetails)
         taskContentValues.put(KEY_OCCURRENCE, tmp.occurrence)
-        val taskInsertResult = db.update(TABLE_TASKS, taskContentValues, "$KEY_ID=$id", null)
+        val taskUpdateResult = db.update(TABLE_TASKS, taskContentValues, "$KEY_ID=$id", null)
 
         db.delete(TABLE_ROOMS, "$KEY_TASK_ID=$id", null)
 
         val roomContentValues = ContentValues()
         var success = 0L
         for (room in tmp.rooms) {
-            roomContentValues.put(KEY_TASK_ID, taskInsertResult)
+            roomContentValues.put(KEY_TASK_ID, taskUpdateResult)
             roomContentValues.put(KEY_ROOM, room)
             success = db.insert(TABLE_ROOMS, null, roomContentValues)
         }
 
         db.close()
         return success
+    }
+
+    fun updateRoom(id: Int, completed: Boolean): Int {
+        val db = this.writableDatabase
+        val roomContentValues = ContentValues()
+        roomContentValues.put(KEY_COMPLETED, completed)
+        val roomUpdateResult = db.update(TABLE_ROOMS, roomContentValues, "$KEY_ID=$id", null)
+
+        db.close()
+        return roomUpdateResult
     }
 
     private fun getDate(): String {
