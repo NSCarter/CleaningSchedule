@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.fragments.ToDoListFragmentDirections
 import com.example.cleaningschedule.models.Occurrence
+import com.example.cleaningschedule.models.Room
 
-class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<String>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
+class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<Room>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.taskName)
@@ -37,7 +38,7 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
 
         for (room in rooms) {
             val checkBox = CheckBox(holder.itemView.context)
-            checkBox.text = room
+            checkBox.text = room.room
             checkBox.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             checkBox.setOnClickListener{
                 if(checkBox.isChecked) {

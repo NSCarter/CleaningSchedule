@@ -1,6 +1,8 @@
 package com.example.cleaningschedule.fragments
 
 import android.app.AlertDialog
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +15,6 @@ import androidx.navigation.findNavController
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
-import com.example.cleaningschedule.models.Room
 import com.example.cleaningschedule.models.Task
 import com.example.cleaningschedule.viewmodels.AddTaskViewModel
 import kotlinx.android.synthetic.main.add_task_fragment.*
@@ -33,7 +34,10 @@ class AddTaskFragment : Fragment() {
     private lateinit var rooms: MutableList<String>
     private var occurrence = -1
 
-    private val checkedItems = BooleanArray(Room.values().size) {false}
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var roomsList: MutableSet<String>
+
+    private lateinit var checkedItems: BooleanArray
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,6 +51,11 @@ class AddTaskFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
 
+        sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
+        roomsList =  sharedPreferences.getStringSet("rooms", setOf())!!
+
+        checkedItems = BooleanArray(roomsList.size) {false}
+
         occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
 
         saveButton.setOnClickListener {
@@ -55,8 +64,7 @@ class AddTaskFragment : Fragment() {
             rooms = mutableListOf()
             for (i in checkedItems.indices) {
                 if(checkedItems[i]) {
-                    rooms.add(getString(Room.values()[i].Room))
-
+                    rooms.add(roomsList.elementAt(i))
                 }
             }
             occurrence = occurrenceDropdown.selectedItemPosition
@@ -83,9 +91,9 @@ class AddTaskFragment : Fragment() {
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
             val dialogLayout = inflater.inflate(R.layout.select_rooms_list, null)
 
-            val roomArray = arrayOfNulls<Pair <String, Boolean>>(Room.values().size)
-            for (i in Room.values().indices) {
-                roomArray[i] = Pair(getString(Room.values()[i].Room), true)
+            val roomArray = arrayOfNulls<Pair <String, Boolean>>(roomsList.size)
+            for (i in roomsList.indices) {
+                roomArray[i] = Pair(roomsList.elementAt(i), true)
             }
 
             dialogLayout.roomsList.adapter = ArrayAdapter<Pair <String, Boolean>>(requireContext(), android.R.layout.simple_list_item_multiple_choice, roomArray)
@@ -106,7 +114,7 @@ class AddTaskFragment : Fragment() {
                 for (i in checkedItems.indices) {
                     if (checkedItems[i]) {
                         val roomView = inflater.inflate(R.layout.removable_room_view, null)
-                        roomView.roomText.text = getString(Room.values()[i].Room)
+                        roomView.roomText.text = roomsList.elementAt(i)
                         roomView.removeButton.tag = i
                         roomView.removeButton.setOnClickListener { v ->
                             checkedItems[v.tag.toString().toInt()] = false

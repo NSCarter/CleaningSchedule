@@ -39,14 +39,14 @@ class MainActivity : AppCompatActivity() {
 
         val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         val rooms: Set<String> = setOf(
-            R.string.living_room.toString(),
-            R.string.kitchen.toString(),
-            R.string.dining_room.toString(),
-            R.string.bathroom.toString(),
-            R.string.bedroom.toString(),
-            R.string.hallway.toString(),
-            R.string.office.toString(),
-            R.string.pantry.toString())
+            getString(R.string.living_room),
+            getString(R.string.kitchen),
+            getString(R.string.dining_room),
+            getString(R.string.bathroom),
+            getString(R.string.bedroom),
+            getString(R.string.hallway),
+            getString(R.string.office),
+            getString(R.string.pantry))
         if (sharedPreferences.getStringSet("rooms", null) == null) {
             with (sharedPreferences.edit()) {
                 putStringSet("rooms", rooms)

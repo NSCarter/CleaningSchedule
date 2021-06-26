@@ -4,11 +4,13 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import com.example.cleaningschedule.models.Room
 import com.example.cleaningschedule.models.Task
+import java.util.*
 
 class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
     companion object {
-        private const val DATABASE_VERSION = 4
+        private const val DATABASE_VERSION = 5
         private const val DATABASE_NAME = "TaskDatabase"
         private const val TABLE_TASKS = "TaskTable"
         private const val TABLE_ROOMS = "RoomTable"
@@ -18,6 +20,8 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         private const val KEY_ROOM = "room"
         private const val KEY_OCCURRENCE = "occurrence"
         private const val KEY_TASK_ID = "taskId"
+        private const val KEY_NEXT_OCCURRENCE = "nextOccurrence"
+        private const val KEY_COMPLETED = "completed"
     }
 
     override fun onCreate(db: SQLiteDatabase?) {
@@ -25,13 +29,15 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_NAME + " TEXT NOT NULL,"
                 + KEY_EXTRA_DETAILS + " TEXT,"
-                + KEY_OCCURRENCE + " INTEGER)")
+                + KEY_OCCURRENCE + " INTEGER,"
+                + KEY_NEXT_OCCURRENCE + " DATE)")
         db?.execSQL(createTasksTable)
 
         val createRoomsTable = ("CREATE TABLE " + TABLE_ROOMS + "("
                 + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + KEY_TASK_ID + " INTEGER NOT NULL,"
                 + KEY_ROOM + " TEXT NOT NULL,"
+                + KEY_COMPLETED + " BOOLEAN DEFAULT FALSE,"
                 + "FOREIGN KEY(" + KEY_TASK_ID + ") REFERENCES " + TABLE_TASKS + "(" + KEY_ID + ") ON DELETE CASCADE)")
         db?.execSQL(createRoomsTable)
     }
@@ -49,6 +55,7 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         taskContentValues.put(KEY_NAME, tmp.taskName)
         taskContentValues.put(KEY_EXTRA_DETAILS, tmp.extraDetails)
         taskContentValues.put(KEY_OCCURRENCE, tmp.occurrence)
+        taskContentValues.put(KEY_NEXT_OCCURRENCE, Calendar.getInstance().toString())
         val taskInsertResult = db.insert(TABLE_TASKS, null, taskContentValues)
 
         val roomContentValues = ContentValues()
@@ -63,11 +70,11 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return success
     }
 
-    fun getTasks(): MutableList<Pair<MutableList<String>, MutableList<String>>> {
+    fun getTasks(): MutableList<Pair<MutableList<String>, MutableList<Room>>> {
         val db = this.readableDatabase
 
         val cursor = db.rawQuery("SELECT * FROM $TABLE_TASKS", null)
-        val tasks = mutableListOf<Pair<MutableList<String>, MutableList<String>>>()
+        val tasks = mutableListOf<Pair<MutableList<String>, MutableList<Room>>>()
 
         if(cursor.moveToFirst()) {
             do {
@@ -77,13 +84,14 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
                 task.add(cursor.getString(1))
                 task.add(cursor.getString(2))
                 task.add(cursor.getString(3))
+                task.add(cursor.getString(4))
 
                 val roomsCursor = db.rawQuery("SELECT * FROM $TABLE_ROOMS WHERE $KEY_TASK_ID=$id", null)
-                val rooms = mutableListOf<String>()
+                val rooms = mutableListOf<Room>()
 
                 if(roomsCursor.moveToFirst()) {
                     do {
-                        rooms.add(roomsCursor.getString(2))
+                        rooms.add(Room(roomsCursor.getString(2), roomsCursor.getInt(3) > 0))
                     } while (roomsCursor.moveToNext())
                 }
                 roomsCursor.close()
