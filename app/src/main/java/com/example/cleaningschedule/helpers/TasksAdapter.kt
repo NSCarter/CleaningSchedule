@@ -12,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.fragments.ToDoListFragmentDirections
 import com.example.cleaningschedule.models.Occurrence
+import com.example.cleaningschedule.models.Room
 
-class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<String>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
+class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, MutableList<Room>>>) : RecyclerView.Adapter<TasksAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nameTextView: TextView = itemView.findViewById(R.id.taskName)
@@ -37,14 +38,23 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
 
         for (room in rooms) {
             val checkBox = CheckBox(holder.itemView.context)
-            checkBox.text = room
+            checkBox.text = room.room
             checkBox.layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            checkBox.isChecked = room.isChecked
+            checkPaintFlags(checkBox)
+
             checkBox.setOnClickListener{
-                if(checkBox.isChecked) {
-                    checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
-                } else {
-                    checkBox.paintFlags = 0
-                }
+                room.isChecked = checkBox.isChecked
+
+                checkPaintFlags(checkBox)
+
+                val databaseHandler = DatabaseHandler(holder.itemView.context)
+                databaseHandler.updateRoom(room.id, room.isChecked)
+
+                val navController = holder.itemView.findNavController()
+                val id = navController.currentDestination?.id
+                navController.popBackStack(id!!, true)
+                navController.navigate(id)
             }
             holder.roomsList.addView(checkBox)
         }
@@ -57,5 +67,13 @@ class TasksAdapter (private val tasks: MutableList<Pair<MutableList<String>, Mut
 
     override fun getItemCount(): Int {
         return tasks.size
+    }
+
+    private fun checkPaintFlags(checkBox: CheckBox) {
+        if(checkBox.isChecked) {
+            checkBox.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+        } else {
+            checkBox.paintFlags = 0
+        }
     }
 }

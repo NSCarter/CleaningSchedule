@@ -49,7 +49,25 @@ class ToDoListFragment : Fragment() {
         setHasOptionsMenu(true)
 
         val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
-        val tasks = databaseHandler.getTasks()
+        val tasks = databaseHandler.getToDoTasks()
+
+        val iterator = tasks.iterator()
+        while(iterator.hasNext()){
+            val nextTask = iterator.next()
+            val (task, rooms) = nextTask
+
+            var finished = true
+
+            for (room in rooms) {
+                if (!room.isChecked) finished = false
+            }
+
+            if (finished) {
+                databaseHandler.completedTask(task)
+                iterator.remove()
+            }
+        }
+
         val adapter = TasksAdapter(tasks)
         tasksList.adapter = adapter
         tasksList.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
