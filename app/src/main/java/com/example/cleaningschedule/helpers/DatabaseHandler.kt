@@ -214,8 +214,49 @@ class DatabaseHandler(context: Context): SQLiteOpenHelper(context, DATABASE_NAME
         return roomUpdateResult
     }
 
+    fun completedTask(task: MutableList<String>): Int {
+        val db = this.writableDatabase
+        val id = task[0]
+
+        val nextOccurrence = when (task[3].toInt()) {
+            0 -> increaseDate(1)
+            1 -> increaseDate(7)
+            2 -> increaseMonth(1)
+            3 -> increaseMonth(3)
+            else -> increaseYear()
+        }
+
+        val contentValues = ContentValues()
+        contentValues.put(KEY_NEXT_OCCURRENCE, nextOccurrence)
+        val taskUpdateResult = db.update(TABLE_TASKS, contentValues, "$KEY_ID=$id", null)
+
+        db.close()
+        return taskUpdateResult
+    }
+
     private fun getDate(): String {
         val sdf = SimpleDateFormat("yyyMMdd", Locale.ENGLISH)
         return sdf.format(Date())
+    }
+
+    private fun increaseDate(amount: Int): String {
+        val sdf = SimpleDateFormat("yyyMMdd", Locale.ENGLISH)
+        val date = Calendar.getInstance()
+        date.add(Calendar.DATE, amount)
+        return sdf.format(date.time)
+    }
+
+    private fun increaseMonth(amount: Int): String {
+        val sdf = SimpleDateFormat("yyyMMdd", Locale.ENGLISH)
+        val date = Calendar.getInstance()
+        date.add(Calendar.MONTH, amount)
+        return sdf.format(date.time)
+    }
+
+    private fun increaseYear(): String {
+        val sdf = SimpleDateFormat("yyyMMdd", Locale.ENGLISH)
+        val date = Calendar.getInstance()
+        date.add(Calendar.YEAR, 1)
+        return sdf.format(date.time)
     }
 }
