@@ -3,16 +3,9 @@
     <color name="colorPrimary">#00BFFF</color>
     <color name="colorPrimaryDark">#008fbf</color>
     <color name="colorAccent">#00BFFF</color>
-    <color name="red">#FF0000</color>
     <color name="black">#000000</color>
     <color name="hint">#C0C0C0</color>
-    <color name="pink">#FC0FC0</color>
-    <color name="orange">#FFA500</color>
-    <color name="yellow">#FFFF00</color>
-    <color name="blue">#00BFFF</color>
-    <color name="green">#00FF00</color>
     <color name="purple">#C600FF</color>
-    <color name="white">#FFFFFF</color>
     <color name="lime_green">#32CD32</color>
     <color name="transparent">#00000000</color>
 </resources>
