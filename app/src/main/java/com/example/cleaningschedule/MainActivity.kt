@@ -4,26 +4,25 @@ import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.cleaningschedule.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        drawerLayout = findViewById(R.id.drawer_layout)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
 
         val topLevelDestinations: HashSet<Int> = HashSet(listOf(R.id.toDoList, R.id.allTasks, R.id.settings))
 
@@ -31,11 +30,11 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
         findViewById<NavigationView>(R.id.nav_view).setupWithNavController(navController)
         appBarConfiguration = AppBarConfiguration.Builder(topLevelDestinations)
-            .setOpenableLayout(drawerLayout)
+            .setOpenableLayout(binding.drawerLayout)
             .build()
         setupActionBarWithNavController(navController, appBarConfiguration)
 
-        nav_view.menu.getItem(0).isChecked = true
+        binding.navView.menu.getItem(0).isChecked = true
 
         val sharedPreferences = getPreferences(Context.MODE_PRIVATE)
         val rooms: Set<String> = setOf(
@@ -69,6 +68,6 @@ class MainActivity : AppCompatActivity() {
 
         val navController = findNavController(R.id.nav_host_fragment)
         navController.navigate(fragmentId)
-        drawerLayout.closeDrawers()
+        binding.drawerLayout.closeDrawers()
     }
 }

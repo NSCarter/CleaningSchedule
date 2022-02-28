@@ -7,19 +7,22 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
-import com.example.cleaningschedule.R
+import com.example.cleaningschedule.databinding.FragmentViewTaskBinding
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
-import kotlinx.android.synthetic.main.fragment_view_task.*
 
 class ViewTaskFragment : Fragment() {
+
+    private var _binding: FragmentViewTaskBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_view_task, container, false)
+    ): View {
+        _binding = FragmentViewTaskBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -31,24 +34,29 @@ class ViewTaskFragment : Fragment() {
         val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
         val (taskInfo, rooms) = databaseHandler.getTask(taskId!!)
 
-        taskNameTextView.text = taskInfo[0]
-        taskExtraDetailsTextView.text = taskInfo[1]
-        taskOccurrenceTextView.text = Occurrence.values()[taskInfo[2].toInt()].toString()
+        binding.taskNameTextView.text = taskInfo[0]
+        binding.taskExtraDetailsTextView.text = taskInfo[1]
+        binding.taskOccurrenceTextView.text = Occurrence.values()[taskInfo[2].toInt()].toString()
 
         var roomsText = ""
         for (room in rooms) {
             roomsText += room
         }
-        taskRoomsTextView.text = roomsText
+        binding.taskRoomsTextView.text = roomsText
 
-        updateButton.setOnClickListener {
+        binding.updateButton.setOnClickListener {
             val action = ViewTaskFragmentDirections.actionViewTaskToUpdateTask(taskId)
             view.findNavController().navigate(action)
         }
 
-        deleteButton.setOnClickListener {
+        binding.deleteButton.setOnClickListener {
             showDialog(taskId)
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun showDialog(id: Int) {
