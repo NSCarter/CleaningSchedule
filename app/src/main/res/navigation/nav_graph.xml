@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/updateTask"
         android:name="com.example.cleaningschedule.fragments.UpdateTaskFragment"
-        android:label="Update Task">
+        android:label="@string/update_task">
         <argument
             android:name="taskId"
             app:argType="integer"/>

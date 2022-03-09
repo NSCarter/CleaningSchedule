@@ -99,13 +99,13 @@ class ToDoListInstrumentedTest {
     }
 
     @Test
-    fun selectTaskGoeToTaskView() {
+    fun selectTaskGoesToTaskView() {
         addTask(1)
         refreshScreen()
 
         onView(withText("task 1")).perform(click())
 
-        onView(withText("UPDATE")).check(matches(isDisplayed()))
+        onView(withId(R.id.viewTaskFragment)).check(matches(isDisplayed()))
     }
 
     private fun refreshScreen() {

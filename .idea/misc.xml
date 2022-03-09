@@ -4,7 +4,11 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/drawable/cross.xml" value="0.14322916666666666" />
+        <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/layout/add_task_fragment.xml" value="0.19519927536231885" />
+        <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/layout/fragment_all_tasks.xml" value="0.1" />
         <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/layout/removable_room_view.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/layout/select_rooms_list.xml" value="0.12107396149949341" />
+        <entry key="..\:/Users/niamh/AndroidStudioProjects/CleaningSchedule/app/src/main/res/layout/to_do_list_fragment.xml" value="0.10190217391304347" />
       </map>
     </option>
   </component>

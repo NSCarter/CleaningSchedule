@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import com.example.cleaningschedule.R
 import com.example.cleaningschedule.databinding.FragmentViewTaskBinding
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
@@ -61,15 +62,15 @@ class ViewTaskFragment : Fragment() {
 
     private fun showDialog(id: Int) {
         val builder = AlertDialog.Builder(requireContext())
-        builder.setMessage("Are you sure you want to delete this task?")
-        builder.setPositiveButton("Delete")
+        builder.setMessage(getString(R.string.delete_confirmation))
+        builder.setPositiveButton(R.string.delete)
             { _, _ ->
                 val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
                 databaseHandler.deleteTask(id)
                 val action = ViewTaskFragmentDirections.actionViewTaskToToDoList()
                 view?.findNavController()?.navigate(action)
             }
-        builder.setNegativeButton("Cancel")
+        builder.setNegativeButton(R.string.cancel)
         { _, _ ->  }
         builder.show()
     }
