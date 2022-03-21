@@ -2,16 +2,21 @@ package com.example.cleaningschedule
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.example.cleaningschedule.TestHelpers.checkByContainsAndId
+import com.example.cleaningschedule.TestHelpers.checkById
+import com.example.cleaningschedule.TestHelpers.checkByTextAndId
+import com.example.cleaningschedule.TestHelpers.checkDoesNotExistByContainsAndId
+import com.example.cleaningschedule.TestHelpers.clickByContains
+import com.example.cleaningschedule.TestHelpers.clickById
+import com.example.cleaningschedule.TestHelpers.clickByText
+import com.example.cleaningschedule.TestHelpers.refreshScreen
+import com.example.cleaningschedule.TestHelpers.typeString
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
-import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.CoreMatchers.containsString
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -54,112 +59,96 @@ class UpdateTaskInstrumentedTest {
         )
     }
 
-    private fun refreshScreen() {
-        onView(withContentDescription("Open navigation drawer")).perform(click())
-        onView(allOf(withText(R.string.to_do), withResourceName("design_menu_item_text"))).perform(
-            click()
-        )
-    }
-
     @Test
     fun updateName() {
-        onView(withId(R.id.taskEditText)).perform(typeText("1"), closeSoftKeyboard())
-        onView(withText(R.string.save)).perform(click())
+        typeString(R.id.taskEditText, "1")
+        clickByText(R.string.save)
 
-        onView(allOf(withText("task 11"), withId(R.id.taskNameTextView))).check(matches(
-            isDisplayed()))
+        checkByTextAndId("task 11", R.id.taskNameTextView)
     }
 
     @Test
     fun updateExtraDetails() {
-        onView(withId(R.id.extraDetailsEditText)).perform(typeText(" updated"), closeSoftKeyboard())
-        onView(withText(R.string.save)).perform(click())
+        typeString(R.id.extraDetailsEditText, " updated")
+        clickByText(R.string.save)
 
-        onView(allOf(withText("extraDetails updated"), withId(R.id.taskExtraDetailsTextView))).check(matches(
-            isDisplayed()))
+        checkByTextAndId("extraDetails updated", R.id.taskExtraDetailsTextView)
     }
 
     @Test
     fun updateOccurrence() {
-        onView(withId(R.id.occurrenceDropdown)).perform(click())
-        onView(withText("DAILY")).perform(click())
+        clickById(R.id.occurrenceDropdown)
+        clickByText("DAILY")
 
-        onView(withText(R.string.save)).perform(click())
+        clickByText(R.string.save)
 
-        onView(allOf(withText("DAILY"), withId(R.id.taskOccurrenceTextView))).check(matches(
-            isDisplayed()))
+        checkByTextAndId("DAILY", R.id.taskOccurrenceTextView)
     }
 
     @Test
     fun updateRoomsWILLFAIL() {
-        onView(withId(R.id.addRoomButton)).perform(click())
-        onView(withText(containsString("Kitchen"))).perform(click())
-        onView(withText(containsString("Bathroom"))).perform(click())
-        onView(withText(containsString("Office"))).perform(click())
-        onView(withText(containsString("Pantry"))).perform(click())
-        onView(withText("DONE")).perform(click())
+        clickById(R.id.addRoomButton)
+        clickByContains("Kitchen")
+        clickByContains("Bathroom")
+        clickByContains("Office")
+        clickByContains("Pantry")
+        clickByText("DONE")
 
-        onView(withText(R.string.save)).perform(click())
+        clickByText(R.string.save)
 
-        onView(allOf(withText(containsString("Office")), withId(R.id.taskRoomsTextView))).check(matches(
-            isDisplayed()))
-        onView(allOf(withText(containsString("Pantry")), withId(R.id.taskRoomsTextView))).check(matches(
-            isDisplayed()))
-        onView(allOf(withText(containsString("Kitchen")), withId(R.id.taskRoomsTextView))).check(doesNotExist())
-        onView(allOf(withText(containsString("Bathroom")), withId(R.id.taskRoomsTextView))).check(doesNotExist())
+        checkByContainsAndId("Office", R.id.taskRoomsTextView)
+        checkByContainsAndId("Pantry", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("Kitchen", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("Bathroom", R.id.taskRoomsTextView)
     }
 
     @Test
     fun cancelWILLFAIL() {
-        onView(withText(R.string.cancel)).perform(click())
+        clickByText(R.string.cancel)
 
-        onView(withId(R.id.viewTaskFragment)).check(matches(isDisplayed()))
+        checkById(R.id.viewTaskFragment)
     }
 
     @Test
     fun cancelNameChangesWILLFAIL() {
-        onView(withId(R.id.taskEditText)).perform(typeText("1"), closeSoftKeyboard())
-        onView(withText(R.string.cancel)).perform(click())
+        typeString(R.id.taskEditText, "1")
+        clickByText(R.string.cancel)
 
-        onView(allOf(withText("task"), withId(R.id.taskNameTextView))).check(matches(isDisplayed()))
+        checkByTextAndId("task", R.id.taskNameTextView)
     }
 
     @Test
     fun cancelExtraDetailsChangesWILLFAIL() {
-        onView(withId(R.id.extraDetailsEditText)).perform(typeText(" updated"), closeSoftKeyboard())
-        onView(withText(R.string.cancel)).perform(click())
+        typeString(R.id.extraDetailsEditText, " updated")
+        clickByText(R.string.cancel)
 
-        onView(allOf(withText("extraDetails"), withId(R.id.taskExtraDetailsTextView))).check(matches(
-            isDisplayed()))
+        checkByTextAndId("extraDetails", R.id.taskExtraDetailsTextView)
     }
 
     @Test
     fun cancelOccurrenceChangesWILLFAIL() {
-        onView(withId(R.id.occurrenceDropdown)).perform(click())
-        onView(withText("DAILY")).perform(click())
+        clickById(R.id.occurrenceDropdown)
+        clickByText("DAILY")
 
-        onView(withText(R.string.cancel)).perform(click())
+        clickByText(R.string.cancel)
 
-        onView(allOf(withText("WEEKLY"), withId(R.id.taskOccurrenceTextView))).check(matches(
-            isDisplayed()))
+        checkByTextAndId("WEEKLY", R.id.taskOccurrenceTextView)
     }
 
     @Test
     fun cancelRoomChangesWILLFAIL() {
-        onView(withId(R.id.addRoomButton)).perform(click())
-        onView(withText(containsString("Kitchen"))).perform(click())
-        onView(withText(containsString("Bathroom"))).perform(click())
-        onView(withText(containsString("Office"))).perform(click())
-        onView(withText(containsString("Pantry"))).perform(click())
-        onView(withText("DONE")).perform(click())
+        clickById(R.id.addRoomButton)
+        clickByContains("Kitchen")
+        clickByContains("Bathroom")
+        clickByContains("Office")
+        clickByContains("Pantry")
+        clickByText("DONE")
 
-        onView(withText(R.string.cancel)).perform(click())
+        clickByText(R.string.cancel)
 
-        onView(allOf(withText(containsString("Kitchen")), withId(R.id.taskRoomsTextView))).check(matches(
-            isDisplayed()))
-        onView(allOf(withText(containsString("Bathroom")), withId(R.id.taskRoomsTextView))).check(matches(
-            isDisplayed()))
-        onView(allOf(withText(containsString("Office")), withId(R.id.taskRoomsTextView))).check(doesNotExist())
-        onView(allOf(withText(containsString("Pantry")), withId(R.id.taskRoomsTextView))).check(doesNotExist())
+        checkByContainsAndId("Kitchen", R.id.taskRoomsTextView)
+        checkByContainsAndId("Bathroom", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("Office", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("Pantry", R.id.taskRoomsTextView)
     }
 }

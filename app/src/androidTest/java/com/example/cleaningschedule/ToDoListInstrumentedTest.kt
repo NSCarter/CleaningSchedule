@@ -1,16 +1,19 @@
 package com.example.cleaningschedule
 
 import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
+import com.example.cleaningschedule.TestHelpers.checkById
+import com.example.cleaningschedule.TestHelpers.checkByText
+import com.example.cleaningschedule.TestHelpers.checkByTextAndId
+import com.example.cleaningschedule.TestHelpers.checkDoesNotExistById
+import com.example.cleaningschedule.TestHelpers.clickByText
+import com.example.cleaningschedule.TestHelpers.refreshScreen
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
-import org.hamcrest.CoreMatchers.allOf
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
@@ -58,7 +61,7 @@ class ToDoListInstrumentedTest {
         addTask(1)
         refreshScreen()
 
-        onView(withId(R.id.taskName)).check(matches(isDisplayed()))
+        checkById(R.id.taskName)
     }
 
     @Test
@@ -67,8 +70,8 @@ class ToDoListInstrumentedTest {
         addTask(2)
         refreshScreen()
 
-        onView(withText("task 1")).check(matches(isDisplayed()))
-        onView(withText("task 2")).check(matches(isDisplayed()))
+        checkByText("task 1")
+        checkByText("task 2")
     }
 
     @Test
@@ -76,15 +79,10 @@ class ToDoListInstrumentedTest {
         addTask(1)
         refreshScreen()
 
-        onView(allOf(withText("task 1"), withId(R.id.taskName))).check(matches(isDisplayed()))
-        onView(
-            allOf(
-                withText("extraDetails"),
-                withId(R.id.extraDetails)
-            )
-        ).check(matches(isDisplayed()))
-        onView(withText("kitchen")).check(matches(isDisplayed()))
-        onView(allOf(withText("WEEKLY"), withId(R.id.occurrence))).check(matches(isDisplayed()))
+        checkByTextAndId("task 1", R.id.taskName)
+        checkByTextAndId("extraDetails", R.id.extraDetails)
+        checkByText("kitchen")
+        checkByTextAndId("WEEKLY", R.id.occurrence)
     }
 
     @Test
@@ -92,10 +90,10 @@ class ToDoListInstrumentedTest {
         addTask(1)
         refreshScreen()
 
-        onView(withText("kitchen")).perform(click())
-        onView(withText("bathroom")).perform(click())
+        clickByText("kitchen")
+        clickByText("bathroom")
 
-        onView(withId(R.id.taskName)).check(doesNotExist())
+        checkDoesNotExistById(R.id.taskName)
     }
 
     @Test
@@ -103,15 +101,8 @@ class ToDoListInstrumentedTest {
         addTask(1)
         refreshScreen()
 
-        onView(withText("task 1")).perform(click())
+        clickByText("task 1")
 
-        onView(withId(R.id.viewTaskFragment)).check(matches(isDisplayed()))
-    }
-
-    private fun refreshScreen() {
-        onView(withContentDescription("Open navigation drawer")).perform(click())
-        onView(allOf(withText(R.string.to_do), withResourceName("design_menu_item_text"))).perform(
-            click()
-        )
+        checkById(R.id.viewTaskFragment)
     }
 }
