@@ -78,6 +78,10 @@ object TestHelpers {
         onView(withContentDescription(string)).perform(click())
     }
 
+    fun clickByContentDescription(id: Int) {
+        onView(withContentDescription(id)).perform(click())
+    }
+
     fun typeString(id: Int, string: String) {
         onView(withId(id)).perform(typeText(string), closeSoftKeyboard())
     }
