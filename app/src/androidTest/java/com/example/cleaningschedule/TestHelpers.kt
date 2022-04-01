@@ -21,6 +21,18 @@ object TestHelpers {
         )
     }
 
+    fun loadScreen(id: Int) {
+        onView(withContentDescription("Open navigation drawer")).perform(click())
+        onView(
+            allOf(
+                withText(id),
+                withResourceName("design_menu_item_text")
+            )
+        ).perform(
+            click()
+        )
+    }
+
     fun checkById(id: Int) {
         onView(withId(id)).check(matches(isDisplayed()))
     }

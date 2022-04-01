@@ -1,35 +1,23 @@
 package com.example.cleaningschedule
 
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
-import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.example.cleaningschedule.TestHelpers.checkById
 import com.example.cleaningschedule.TestHelpers.checkByText
-import com.example.cleaningschedule.TestHelpers.checkByTextAndId
 import com.example.cleaningschedule.TestHelpers.checkDoesNotExistById
-import com.example.cleaningschedule.TestHelpers.clickByText
+import com.example.cleaningschedule.TestHelpers.loadScreen
 import com.example.cleaningschedule.TestHelpers.refreshScreen
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
 import org.junit.After
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
 
-/**
- * Instrumented test, which will execute on an Android device.
- *
- * See [testing documentation](http://d.android.com/tools/testing).
- */
-@RunWith(AndroidJUnit4::class)
-class ToDoListInstrumentedTest {
+class AllTasksInstrumentedTest {
 
-    @Rule
-    @JvmField
-    var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
+@Rule
+@JvmField
+var activityRule: ActivityTestRule<MainActivity> = ActivityTestRule(MainActivity::class.java)
 
     private fun getActivity() = activityRule.activity
 
@@ -53,13 +41,14 @@ class ToDoListInstrumentedTest {
 
     @Test
     fun noTasks() {
+        loadScreen(R.string.all_tasks)
         checkDoesNotExistById(R.id.taskName)
     }
 
     @Test
     fun oneTask() {
         addTask(1)
-        refreshScreen()
+        loadScreen(R.string.all_tasks)
 
         checkById(R.id.taskName)
     }
@@ -68,40 +57,40 @@ class ToDoListInstrumentedTest {
     fun multipleTasks() {
         addTask(1)
         addTask(2)
-        refreshScreen()
+        loadScreen(R.string.all_tasks)
 
         checkByText("task 1")
         checkByText("task 2")
     }
 
     @Test
-    fun correctInfo() {
+    fun allTasks() {
         addTask(1)
+        val databaseHandler = DatabaseHandler(getActivity().applicationContext)
+        databaseHandler.addTask(
+            Task(
+                "task 2",
+                "extraDetails",
+                mutableListOf("bedroom"),
+                1
+            )
+        )
         refreshScreen()
+        TestHelpers.clickByText("kitchen")
+        TestHelpers.clickByText("bathroom")
 
-        checkByTextAndId("task 1", R.id.taskName)
-        checkByTextAndId("extraDetails", R.id.extraDetails)
-        checkByText("kitchen")
-        checkByTextAndId("WEEKLY", R.id.occurrence)
-    }
+        loadScreen(R.string.all_tasks)
 
-    @Test
-    fun finishTask() {
-        addTask(1)
-        refreshScreen()
-
-        clickByText("kitchen")
-        clickByText("bathroom")
-
-        checkDoesNotExistById(R.id.taskName)
+        checkByText("task 1")
+        checkByText("task 2")
     }
 
     @Test
     fun selectTaskGoesToTaskView() {
         addTask(1)
-        refreshScreen()
+        loadScreen(R.string.all_tasks)
 
-        clickByText("task 1")
+        TestHelpers.clickByText("task 1")
 
         checkById(R.id.viewTaskFragment)
     }
