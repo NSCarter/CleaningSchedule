@@ -1,16 +1,18 @@
-package com.example.cleaningschedule
+package com.example.cleaningschedule.fragments
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.example.cleaningschedule.TestHelpers.checkById
-import com.example.cleaningschedule.TestHelpers.checkByText
-import com.example.cleaningschedule.TestHelpers.checkByTextAndId
-import com.example.cleaningschedule.TestHelpers.clickByContains
-import com.example.cleaningschedule.TestHelpers.clickByContentDescription
-import com.example.cleaningschedule.TestHelpers.clickById
-import com.example.cleaningschedule.TestHelpers.clickByText
-import com.example.cleaningschedule.TestHelpers.typeString
+import com.example.cleaningschedule.MainActivity
+import com.example.cleaningschedule.R
+import com.example.cleaningschedule.fragments.TestHelpers.checkById
+import com.example.cleaningschedule.fragments.TestHelpers.checkByText
+import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
+import com.example.cleaningschedule.fragments.TestHelpers.clickByContains
+import com.example.cleaningschedule.fragments.TestHelpers.clickByContentDescription
+import com.example.cleaningschedule.fragments.TestHelpers.clickById
+import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.typeString
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

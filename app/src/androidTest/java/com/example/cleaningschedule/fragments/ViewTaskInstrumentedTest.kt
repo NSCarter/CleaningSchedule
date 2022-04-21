@@ -1,15 +1,17 @@
-package com.example.cleaningschedule
+package com.example.cleaningschedule.fragments
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.example.cleaningschedule.TestHelpers.checkById
-import com.example.cleaningschedule.TestHelpers.checkByText
-import com.example.cleaningschedule.TestHelpers.checkByTextAndId
-import com.example.cleaningschedule.TestHelpers.checkDoesNotExistByText
-import com.example.cleaningschedule.TestHelpers.clickByContentDescription
-import com.example.cleaningschedule.TestHelpers.clickByText
-import com.example.cleaningschedule.TestHelpers.refreshScreen
+import com.example.cleaningschedule.MainActivity
+import com.example.cleaningschedule.R
+import com.example.cleaningschedule.fragments.TestHelpers.checkById
+import com.example.cleaningschedule.fragments.TestHelpers.checkByText
+import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
+import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByText
+import com.example.cleaningschedule.fragments.TestHelpers.clickByContentDescription
+import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.refreshScreen
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
 import org.junit.After

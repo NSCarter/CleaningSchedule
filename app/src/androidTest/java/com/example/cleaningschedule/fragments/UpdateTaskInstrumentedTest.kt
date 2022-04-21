@@ -1,4 +1,4 @@
-package com.example.cleaningschedule
+package com.example.cleaningschedule.fragments
 
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.*
@@ -6,15 +6,17 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
-import com.example.cleaningschedule.TestHelpers.checkByContainsAndId
-import com.example.cleaningschedule.TestHelpers.checkById
-import com.example.cleaningschedule.TestHelpers.checkByTextAndId
-import com.example.cleaningschedule.TestHelpers.checkDoesNotExistByContainsAndId
-import com.example.cleaningschedule.TestHelpers.clickByContains
-import com.example.cleaningschedule.TestHelpers.clickById
-import com.example.cleaningschedule.TestHelpers.clickByText
-import com.example.cleaningschedule.TestHelpers.refreshScreen
-import com.example.cleaningschedule.TestHelpers.typeString
+import com.example.cleaningschedule.MainActivity
+import com.example.cleaningschedule.R
+import com.example.cleaningschedule.fragments.TestHelpers.checkByContainsAndId
+import com.example.cleaningschedule.fragments.TestHelpers.checkById
+import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
+import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByContainsAndId
+import com.example.cleaningschedule.fragments.TestHelpers.clickByContains
+import com.example.cleaningschedule.fragments.TestHelpers.clickById
+import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.refreshScreen
+import com.example.cleaningschedule.fragments.TestHelpers.typeString
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
 import org.junit.After
