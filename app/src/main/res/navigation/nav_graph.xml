@@ -57,7 +57,7 @@
     <fragment
         android:id="@+id/updateTask"
         android:name="com.example.cleaningschedule.fragments.UpdateTaskFragment"
-        android:label="Update Task">
+        android:label="@string/update_task">
         <argument
             android:name="taskId"
             app:argType="integer"/>
@@ -73,7 +73,11 @@
         android:id="@+id/allTasks"
         android:name="com.example.cleaningschedule.fragments.AllTasksFragment"
         android:label="@string/all_tasks"
-        tools:layout="@layout/fragment_all_tasks" />
+        tools:layout="@layout/fragment_all_tasks">
+        <action
+            android:id="@+id/action_toDoList_to_viewTask"
+            app:destination="@id/viewTask"/>
+    </fragment>
     <fragment
         android:id="@+id/settings"
         android:name="com.example.cleaningschedule.fragments.SettingsFragment"

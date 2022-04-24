@@ -55,4 +55,7 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
+    <string name="remove_room">Remove room</string>
+    <string name="update_task">Update Task</string>
+    <string name="delete_confirmation">Are you sure you want to delete this task?</string>
 </resources>

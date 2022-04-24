@@ -12,21 +12,16 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.example.cleaningschedule.R
+import com.example.cleaningschedule.databinding.AddTaskFragmentBinding
+import com.example.cleaningschedule.databinding.RemovableRoomViewBinding
+import com.example.cleaningschedule.databinding.SelectRoomsListBinding
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Occurrence
 import com.example.cleaningschedule.models.Task
 import com.example.cleaningschedule.viewmodels.AddTaskViewModel
-import kotlinx.android.synthetic.main.add_task_fragment.*
-import kotlinx.android.synthetic.main.removable_room_view.view.*
-import kotlinx.android.synthetic.main.select_rooms_list.view.*
 
 
 class AddTaskFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = AddTaskFragment()
-    }
 
     private lateinit var viewModel: AddTaskViewModel
     private lateinit var name: String
@@ -39,35 +34,43 @@ class AddTaskFragment : Fragment() {
 
     private lateinit var checkedItems: BooleanArray
 
+    private var _binding: AddTaskFragmentBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        _binding = AddTaskFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        return inflater.inflate(R.layout.add_task_fragment, container, false)
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(AddTaskViewModel::class.java)
+        viewModel = ViewModelProvider(this)[AddTaskViewModel::class.java]
 
         sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)
         roomsList =  sharedPreferences.getStringSet("rooms", setOf())!!
 
         checkedItems = BooleanArray(roomsList.size) {false}
 
-        occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
+        binding.occurrenceDropdown.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1, Occurrence.values())
 
-        saveButton.setOnClickListener {
-            name = taskEditText.text.toString()
-            extraDetails = extraDetailsEditText.text.toString()
+        binding.saveButton.setOnClickListener {
+            name = binding.taskEditText.text.toString()
+            extraDetails = binding.extraDetailsEditText.text.toString()
             rooms = mutableListOf()
             for (i in checkedItems.indices) {
                 if(checkedItems[i]) {
                     rooms.add(roomsList.elementAt(i))
                 }
             }
-            occurrence = occurrenceDropdown.selectedItemPosition
+            occurrence = binding.occurrenceDropdown.selectedItemPosition
 
             val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
             val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
@@ -80,7 +83,7 @@ class AddTaskFragment : Fragment() {
             view.findNavController().navigate(action)
         }
 
-        addRoomButton.setOnClickListener{
+        binding.addRoomButton.setOnClickListener{
             showCustomDialog()
         }
     }
@@ -89,8 +92,7 @@ class AddTaskFragment : Fragment() {
         private fun showCustomDialog() {
             val inflater: LayoutInflater = layoutInflater
             val dialogBuilder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-            val dialogLayout = inflater.inflate(R.layout.select_rooms_list, null)
-
+            val dialogLayout: SelectRoomsListBinding = SelectRoomsListBinding.inflate(inflater)
             val roomArray = arrayOfNulls<Pair <String, Boolean>>(roomsList.size)
             for (i in roomsList.indices) {
                 roomArray[i] = Pair(roomsList.elementAt(i), true)
@@ -107,20 +109,20 @@ class AddTaskFragment : Fragment() {
             dialogBuilder.setPositiveButton("Done") { dialog, _ ->
                 dialog.dismiss()
             }
-            dialogBuilder.setView(dialogLayout)
+            dialogBuilder.setView(dialogLayout.root)
             dialogBuilder.setOnDismissListener {
-                selectedRooms.removeAllViews()
+                binding.selectedRooms.removeAllViews()
 
                 for (i in checkedItems.indices) {
                     if (checkedItems[i]) {
-                        val roomView = inflater.inflate(R.layout.removable_room_view, null)
+                        val roomView: RemovableRoomViewBinding = RemovableRoomViewBinding.inflate(inflater)
                         roomView.roomText.text = roomsList.elementAt(i)
                         roomView.removeButton.tag = i
                         roomView.removeButton.setOnClickListener { v ->
                             checkedItems[v.tag.toString().toInt()] = false
-                            selectedRooms.removeViewAt(v.tag.toString().toInt())
+                            binding.selectedRooms.removeViewAt(v.tag.toString().toInt())
                         }
-                        selectedRooms.addView(roomView)
+                        binding.selectedRooms.addView(roomView.root)
                     }
                 }
             }

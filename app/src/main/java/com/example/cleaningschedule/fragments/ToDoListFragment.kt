@@ -7,25 +7,25 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cleaningschedule.R
+import com.example.cleaningschedule.databinding.ToDoListFragmentBinding
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.helpers.TasksAdapter
 import com.example.cleaningschedule.viewmodels.ToDoListViewModel
-import kotlinx.android.synthetic.main.to_do_list_fragment.*
 
 
 class ToDoListFragment : Fragment() {
 
-    companion object {
-        fun newInstance() = ToDoListFragment()
-    }
-
     private lateinit var viewModel: ToDoListViewModel
+
+    private var _binding: ToDoListFragmentBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.to_do_list_fragment, container, false)
+    ): View {
+        _binding = ToDoListFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -45,7 +45,7 @@ class ToDoListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ToDoListViewModel::class.java)
+        viewModel = ViewModelProvider(this)[ToDoListViewModel::class.java]
         setHasOptionsMenu(true)
 
         val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
@@ -69,7 +69,12 @@ class ToDoListFragment : Fragment() {
         }
 
         val adapter = TasksAdapter(tasks)
-        tasksList.adapter = adapter
-        tasksList.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
+        binding.tasksList.adapter = adapter
+        binding.tasksList.layoutManager = LinearLayoutManager(requireActivity().applicationContext)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
