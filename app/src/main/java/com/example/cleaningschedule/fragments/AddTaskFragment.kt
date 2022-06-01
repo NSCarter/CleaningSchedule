@@ -63,24 +63,29 @@ class AddTaskFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             name = binding.taskEditText.text.toString()
-            extraDetails = binding.extraDetailsEditText.text.toString()
             rooms = mutableListOf()
             for (i in checkedItems.indices) {
                 if(checkedItems[i]) {
                     rooms.add(roomsList.elementAt(i))
                 }
             }
-            occurrence = binding.occurrenceDropdown.selectedItemPosition
 
-            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
-            val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
+            if (name == "" || rooms.isEmpty()) {
+                // show error
+            } else {
+                extraDetails = binding.extraDetailsEditText.text.toString()
+                occurrence = binding.occurrenceDropdown.selectedItemPosition
 
-//            if (status < 0) {
-//                //TODO Display error message
-//            }
+                val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
+                val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
 
-            val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
-            view.findNavController().navigate(action)
+//                if (status < 0) {
+//                    //TODO Display error message
+//                }
+
+                val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
+                view.findNavController().navigate(action)
+            }
         }
 
         binding.addRoomButton.setOnClickListener{

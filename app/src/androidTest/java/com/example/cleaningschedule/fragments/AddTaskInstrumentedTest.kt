@@ -54,7 +54,7 @@ class AddTaskInstrumentedTests {
     }
 
     @Test
-    fun noNameWILLFAIL() {
+    fun noName() {
         typeString(R.id.extraDetailsEditText, "extra details")
         clickById(R.id.addRoomButton)
         clickByContains("Bedroom")
@@ -79,7 +79,7 @@ class AddTaskInstrumentedTests {
     }
 
     @Test
-    fun noRoomsWILLFAIL() {
+    fun noRooms() {
         typeString(R.id.taskEditText, "task name")
         typeString(R.id.extraDetailsEditText, "extra details")
 
