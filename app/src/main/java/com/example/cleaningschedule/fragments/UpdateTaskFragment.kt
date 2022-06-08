@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckedTextView
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -64,7 +65,7 @@ class UpdateTaskFragment : Fragment() {
         binding.extraDetailsEditText.setText(taskInfo[1])
 
         for (i in roomsList.indices) {
-            if (roomsList.elementAt(i) in initialRooms) {
+            if (roomsList.elementAt(i).lowercase() in initialRooms) {
                 checkedItems[i] = true
             }
         }
@@ -116,14 +117,22 @@ class UpdateTaskFragment : Fragment() {
 
         val roomArray = arrayOfNulls<Pair <String, Boolean>>(roomsList.size)
         for (i in roomsList.indices) {
-            roomArray[i] = Pair(roomsList.elementAt(i), true)
+            roomArray[i] = Pair(roomsList.elementAt(i), checkedItems.elementAt(i))
         }
 
         dialogLayout.roomsList.adapter = ArrayAdapter<Pair <String, Boolean>>(requireContext(), android.R.layout.simple_list_item_multiple_choice, roomArray)
         dialogLayout.roomsList.choiceMode = ListView.CHOICE_MODE_MULTIPLE
+
+        for (i in checkedItems.indices) {
+            if (checkedItems.elementAt(i)) {
+                dialogLayout.roomsList.setItemChecked(i, true)
+                dialogLayout.roomsList.setSelection(i)
+            }
+        }
+
         dialogLayout.roomsList.setOnItemClickListener{_, view, position, _ ->
-            view.isSelected = !view.isSelected
-            checkedItems[position] = view.isSelected
+            val v = view as CheckedTextView
+            checkedItems[position] = v.isChecked
         }
 
         dialogBuilder.setTitle("Select Rooms")

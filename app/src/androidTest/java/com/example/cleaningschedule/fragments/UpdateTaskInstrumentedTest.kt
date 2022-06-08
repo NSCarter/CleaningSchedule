@@ -88,7 +88,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun updateRoomsWILLFAIL() {
+    fun updateRooms() {
         clickById(R.id.addRoomButton)
         clickByContains("Kitchen")
         clickByContains("Bathroom")
