@@ -1,6 +1,7 @@
 package com.example.cleaningschedule.fragments
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,11 +11,14 @@ import com.example.cleaningschedule.MainActivity
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.fragments.TestHelpers.checkByContainsAndId
 import com.example.cleaningschedule.fragments.TestHelpers.checkById
+import com.example.cleaningschedule.fragments.TestHelpers.checkByText
 import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
 import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByContainsAndId
+import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByText
 import com.example.cleaningschedule.fragments.TestHelpers.clickByContains
 import com.example.cleaningschedule.fragments.TestHelpers.clickById
 import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.clickFirstById
 import com.example.cleaningschedule.fragments.TestHelpers.refreshScreen
 import com.example.cleaningschedule.fragments.TestHelpers.typeString
 import com.example.cleaningschedule.helpers.DatabaseHandler
@@ -152,5 +156,23 @@ class UpdateTaskInstrumentedTest {
         checkByContainsAndId("Bathroom", R.id.taskRoomsTextView)
         checkDoesNotExistByContainsAndId("Office", R.id.taskRoomsTextView)
         checkDoesNotExistByContainsAndId("Pantry", R.id.taskRoomsTextView)
+    }
+
+    @Test
+    fun deleteRoomByXWILLFAIL() {
+        clickFirstById(R.id.removeButton)
+
+        checkByText("Pantry")
+        checkDoesNotExistByText("Office")
+    }
+
+    @Test
+    fun updatingDoesNotDeleteTask() {
+        typeString(R.id.taskEditText, "1")
+        clickByText(R.string.save)
+
+        pressBack()
+
+        checkByText("task 11")
     }
 }

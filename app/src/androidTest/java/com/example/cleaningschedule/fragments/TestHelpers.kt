@@ -6,8 +6,11 @@ import androidx.test.espresso.assertion.ViewAssertions.doesNotExist
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import com.example.cleaningschedule.R
+import org.hamcrest.BaseMatcher
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.containsString
+import org.hamcrest.Description
+import org.hamcrest.Matcher
 
 object TestHelpers {
     fun refreshScreen() {
@@ -95,7 +98,28 @@ object TestHelpers {
         onView(withContentDescription(id)).perform(click())
     }
 
+    fun clickFirstById(id: Int) {
+        onView(first(withId(id))).perform(click())
+    }
+
     fun typeString(id: Int, string: String) {
         onView(withId(id)).perform(typeText(string), closeSoftKeyboard())
+    }
+
+    private fun <T> first(matcher: Matcher<T>): Matcher<T> {
+        return object : BaseMatcher<T>() {
+            var isFirst = true
+            override fun matches(item: Any?): Boolean {
+                if (isFirst && matcher.matches(item)) {
+                    isFirst = false
+                    return true
+                }
+                return false
+            }
+
+            override fun describeTo(description: Description) {
+                description.appendText("should return first matching item")
+            }
+        }
     }
 }
