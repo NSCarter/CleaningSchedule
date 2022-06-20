@@ -162,8 +162,8 @@ class UpdateTaskInstrumentedTest {
     fun deleteRoomByX() {
         clickFirstById(R.id.removeButton)
 
-        checkByText("Pantry")
-        checkDoesNotExistByText("Office")
+        checkByText("Bathroom")
+        checkDoesNotExistByText("Kitchen")
     }
 
     @Test
