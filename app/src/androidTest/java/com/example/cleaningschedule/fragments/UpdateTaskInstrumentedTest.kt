@@ -109,22 +109,22 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelWILLFAIL() {
+    fun cancel() {
         clickByText(R.string.cancel)
 
         checkById(R.id.viewTaskFragment)
     }
 
     @Test
-    fun cancelNameChangesWILLFAIL() {
+    fun cancelNameChanges() {
         typeString(R.id.taskEditText, "1")
         clickByText(R.string.cancel)
 
-        checkByTextAndId("task", R.id.taskNameTextView)
+        checkByTextAndId("task 1", R.id.taskNameTextView)
     }
 
     @Test
-    fun cancelExtraDetailsChangesWILLFAIL() {
+    fun cancelExtraDetailsChanges() {
         typeString(R.id.extraDetailsEditText, " updated")
         clickByText(R.string.cancel)
 
@@ -132,7 +132,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelOccurrenceChangesWILLFAIL() {
+    fun cancelOccurrenceChanges() {
         clickById(R.id.occurrenceDropdown)
         clickByText("DAILY")
 
@@ -142,7 +142,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelRoomChangesWILLFAIL() {
+    fun cancelRoomChanges() {
         clickById(R.id.addRoomButton)
         clickByContains("Kitchen")
         clickByContains("Bathroom")
@@ -152,14 +152,14 @@ class UpdateTaskInstrumentedTest {
 
         clickByText(R.string.cancel)
 
-        checkByContainsAndId("Kitchen", R.id.taskRoomsTextView)
-        checkByContainsAndId("Bathroom", R.id.taskRoomsTextView)
-        checkDoesNotExistByContainsAndId("Office", R.id.taskRoomsTextView)
-        checkDoesNotExistByContainsAndId("Pantry", R.id.taskRoomsTextView)
+        checkByContainsAndId("kitchen", R.id.taskRoomsTextView)
+        checkByContainsAndId("bathroom", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("office", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("pantry", R.id.taskRoomsTextView)
     }
 
     @Test
-    fun deleteRoomByXWILLFAIL() {
+    fun deleteRoomByX() {
         clickFirstById(R.id.removeButton)
 
         checkByText("Pantry")

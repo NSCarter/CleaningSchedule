@@ -126,7 +126,7 @@ class AddTaskFragment : Fragment() {
                         roomView.removeButton.tag = i
                         roomView.removeButton.setOnClickListener { v ->
                             checkedItems[v.tag.toString().toInt()] = false
-                            binding.selectedRooms.removeViewAt(v.tag.toString().toInt())
+                            binding.selectedRooms.removeView(v.parent as View)
                         }
                         binding.selectedRooms.addView(roomView.root)
                     }

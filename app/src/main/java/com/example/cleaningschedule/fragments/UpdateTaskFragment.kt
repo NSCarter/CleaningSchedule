@@ -99,6 +99,12 @@ class UpdateTaskFragment : Fragment() {
             navController.popBackStack(id!!, true)
         }
 
+        binding.cancelButton.setOnClickListener {
+            val navController = view.findNavController()
+            val id = navController.currentDestination?.id
+            navController.popBackStack(id!!, true)
+        }
+
         binding.addRoomButton.setOnClickListener{
             showCustomDialog()
         }
@@ -157,7 +163,7 @@ class UpdateTaskFragment : Fragment() {
                 roomView.removeButton.tag = i
                 roomView.removeButton.setOnClickListener { v ->
                     checkedItems[v.tag.toString().toInt()] = false
-                    binding.selectedRooms.removeViewAt(v.tag.toString().toInt())
+                    binding.selectedRooms.removeView(v.parent as View)
                 }
                 binding.selectedRooms.addView(roomView.root)
             }
