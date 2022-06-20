@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.CheckedTextView
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -63,24 +64,29 @@ class AddTaskFragment : Fragment() {
 
         binding.saveButton.setOnClickListener {
             name = binding.taskEditText.text.toString()
-            extraDetails = binding.extraDetailsEditText.text.toString()
             rooms = mutableListOf()
             for (i in checkedItems.indices) {
                 if(checkedItems[i]) {
                     rooms.add(roomsList.elementAt(i))
                 }
             }
-            occurrence = binding.occurrenceDropdown.selectedItemPosition
 
-            val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
-            val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
+            if (name == "" || rooms.isEmpty()) {
+                // show error
+            } else {
+                extraDetails = binding.extraDetailsEditText.text.toString()
+                occurrence = binding.occurrenceDropdown.selectedItemPosition
 
-//            if (status < 0) {
-//                //TODO Display error message
-//            }
+                val databaseHandler = DatabaseHandler(requireActivity().applicationContext)
+                val status = databaseHandler.addTask(Task(name, extraDetails, rooms, occurrence))
 
-            val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
-            view.findNavController().navigate(action)
+//                if (status < 0) {
+//                    //TODO Display error message
+//                }
+
+                val action = AddTaskFragmentDirections.actionAddTaskToToDoList()
+                view.findNavController().navigate(action)
+            }
         }
 
         binding.addRoomButton.setOnClickListener{
@@ -101,8 +107,8 @@ class AddTaskFragment : Fragment() {
             dialogLayout.roomsList.adapter = ArrayAdapter<Pair <String, Boolean>>(requireContext(), android.R.layout.simple_list_item_multiple_choice, roomArray)
             dialogLayout.roomsList.choiceMode = ListView.CHOICE_MODE_MULTIPLE
             dialogLayout.roomsList.setOnItemClickListener{_, view, position, _ ->
-                view.isSelected = !view.isSelected
-                checkedItems[position] = view.isSelected
+                val v = view as CheckedTextView
+                checkedItems[position] = v.isChecked
             }
 
             dialogBuilder.setTitle("Select Rooms")
@@ -120,7 +126,7 @@ class AddTaskFragment : Fragment() {
                         roomView.removeButton.tag = i
                         roomView.removeButton.setOnClickListener { v ->
                             checkedItems[v.tag.toString().toInt()] = false
-                            binding.selectedRooms.removeViewAt(v.tag.toString().toInt())
+                            binding.selectedRooms.removeView(v.parent as View)
                         }
                         binding.selectedRooms.addView(roomView.root)
                     }

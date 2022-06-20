@@ -218,7 +218,7 @@ class DatabaseHandler(context: Context) :
             val roomContentValues = ContentValues()
             var success = 0L
             for (room in tmp.rooms) {
-                roomContentValues.put(KEY_TASK_ID, taskUpdateResult)
+                roomContentValues.put(KEY_TASK_ID, id)
                 roomContentValues.put(KEY_ROOM, room)
                 success = db.insert(TABLE_ROOMS, null, roomContentValues)
             }

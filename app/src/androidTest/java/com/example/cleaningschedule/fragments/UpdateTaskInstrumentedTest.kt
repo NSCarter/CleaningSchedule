@@ -1,6 +1,7 @@
 package com.example.cleaningschedule.fragments
 
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -10,11 +11,14 @@ import com.example.cleaningschedule.MainActivity
 import com.example.cleaningschedule.R
 import com.example.cleaningschedule.fragments.TestHelpers.checkByContainsAndId
 import com.example.cleaningschedule.fragments.TestHelpers.checkById
+import com.example.cleaningschedule.fragments.TestHelpers.checkByText
 import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
 import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByContainsAndId
+import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistByText
 import com.example.cleaningschedule.fragments.TestHelpers.clickByContains
 import com.example.cleaningschedule.fragments.TestHelpers.clickById
 import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.clickFirstById
 import com.example.cleaningschedule.fragments.TestHelpers.refreshScreen
 import com.example.cleaningschedule.fragments.TestHelpers.typeString
 import com.example.cleaningschedule.helpers.DatabaseHandler
@@ -88,7 +92,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun updateRoomsWILLFAIL() {
+    fun updateRooms() {
         clickById(R.id.addRoomButton)
         clickByContains("Kitchen")
         clickByContains("Bathroom")
@@ -105,22 +109,22 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelWILLFAIL() {
+    fun cancel() {
         clickByText(R.string.cancel)
 
         checkById(R.id.viewTaskFragment)
     }
 
     @Test
-    fun cancelNameChangesWILLFAIL() {
+    fun cancelNameChanges() {
         typeString(R.id.taskEditText, "1")
         clickByText(R.string.cancel)
 
-        checkByTextAndId("task", R.id.taskNameTextView)
+        checkByTextAndId("task 1", R.id.taskNameTextView)
     }
 
     @Test
-    fun cancelExtraDetailsChangesWILLFAIL() {
+    fun cancelExtraDetailsChanges() {
         typeString(R.id.extraDetailsEditText, " updated")
         clickByText(R.string.cancel)
 
@@ -128,7 +132,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelOccurrenceChangesWILLFAIL() {
+    fun cancelOccurrenceChanges() {
         clickById(R.id.occurrenceDropdown)
         clickByText("DAILY")
 
@@ -138,7 +142,7 @@ class UpdateTaskInstrumentedTest {
     }
 
     @Test
-    fun cancelRoomChangesWILLFAIL() {
+    fun cancelRoomChanges() {
         clickById(R.id.addRoomButton)
         clickByContains("Kitchen")
         clickByContains("Bathroom")
@@ -148,9 +152,27 @@ class UpdateTaskInstrumentedTest {
 
         clickByText(R.string.cancel)
 
-        checkByContainsAndId("Kitchen", R.id.taskRoomsTextView)
-        checkByContainsAndId("Bathroom", R.id.taskRoomsTextView)
-        checkDoesNotExistByContainsAndId("Office", R.id.taskRoomsTextView)
-        checkDoesNotExistByContainsAndId("Pantry", R.id.taskRoomsTextView)
+        checkByContainsAndId("kitchen", R.id.taskRoomsTextView)
+        checkByContainsAndId("bathroom", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("office", R.id.taskRoomsTextView)
+        checkDoesNotExistByContainsAndId("pantry", R.id.taskRoomsTextView)
+    }
+
+    @Test
+    fun deleteRoomByX() {
+        clickFirstById(R.id.removeButton)
+
+        checkByText("Bathroom")
+        checkDoesNotExistByText("Kitchen")
+    }
+
+    @Test
+    fun updatingDoesNotDeleteTask() {
+        typeString(R.id.taskEditText, "1")
+        clickByText(R.string.save)
+
+        pressBack()
+
+        checkByText("task 11")
     }
 }
