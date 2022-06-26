@@ -253,6 +253,11 @@ class DatabaseHandler(context: Context) :
             contentValues.put(KEY_NEXT_OCCURRENCE, nextOccurrence)
             val taskUpdateResult = db.update(TABLE_TASKS, contentValues, "$KEY_ID=$id", null)
 
+            // Uncheck all rooms
+            val roomContentValues = ContentValues()
+            roomContentValues.put(KEY_COMPLETED, false)
+            db.update(TABLE_ROOMS, roomContentValues, "$KEY_TASK_ID=$id", null)
+
             db.close()
             return taskUpdateResult
         }
