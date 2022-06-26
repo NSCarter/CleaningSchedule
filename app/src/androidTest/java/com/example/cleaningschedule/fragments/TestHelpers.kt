@@ -74,6 +74,10 @@ object TestHelpers {
         onView(allOf(withText(containsString(string)), withId(id))).check(doesNotExist())
     }
 
+    fun checkNotChecked(string: String) {
+        onView(withText(string)).check(matches(isNotChecked()))
+    }
+
     fun clickByText(string: String) {
         onView(withText(string)).perform(click())
     }

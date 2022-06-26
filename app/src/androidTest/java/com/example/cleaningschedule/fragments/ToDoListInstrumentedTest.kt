@@ -9,7 +9,9 @@ import com.example.cleaningschedule.fragments.TestHelpers.checkById
 import com.example.cleaningschedule.fragments.TestHelpers.checkByText
 import com.example.cleaningschedule.fragments.TestHelpers.checkByTextAndId
 import com.example.cleaningschedule.fragments.TestHelpers.checkDoesNotExistById
+import com.example.cleaningschedule.fragments.TestHelpers.checkNotChecked
 import com.example.cleaningschedule.fragments.TestHelpers.clickByText
+import com.example.cleaningschedule.fragments.TestHelpers.loadScreen
 import com.example.cleaningschedule.fragments.TestHelpers.refreshScreen
 import com.example.cleaningschedule.helpers.DatabaseHandler
 import com.example.cleaningschedule.models.Task
@@ -103,5 +105,19 @@ class ToDoListInstrumentedTest {
         clickByText("task 1")
 
         checkById(R.id.viewTaskFragment)
+    }
+
+    @Test
+    fun completingTasksUnchecksRooms() {
+        addTask(1)
+        refreshScreen()
+
+        clickByText("kitchen")
+        clickByText("bathroom")
+
+        loadScreen(R.string.all_tasks)
+
+        checkNotChecked("kitchen")
+        checkNotChecked("bathroom")
     }
 }
