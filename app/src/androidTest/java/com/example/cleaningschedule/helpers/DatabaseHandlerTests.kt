@@ -402,4 +402,23 @@ class DatabaseHandlerTests {
 
         assertNotEquals(result.count(), 0)
     }
+
+    @Test
+    fun completingTasksUnchecksRooms() {
+        databaseHandler.addTask(
+            Task(
+                "task 1",
+                "extraDetails",
+                mutableListOf("kitchen", "bathroom"),
+                1
+            )
+        )
+        databaseHandler.updateRoom(1, true)
+        databaseHandler.updateRoom(2, true)
+
+        val result = databaseHandler.getTasks()
+
+        assertFalse(result[0].second[0].isChecked)
+        assertFalse(result[0].second[1].isChecked)
+    }
 }
